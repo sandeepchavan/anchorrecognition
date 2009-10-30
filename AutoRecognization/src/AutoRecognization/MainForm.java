@@ -22,10 +22,6 @@ import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import vinaorg.library.minulog.config.Configuration;
-import vinaorg.library.minulog.entity.MinuLogException;
-import vinaorg.library.minulog.exception.CorruptExceptionLog;
-import vinaorg.library.minulog.exception.InvalidFolderException;
 
 /**
  *
@@ -44,11 +40,6 @@ public class MainForm extends javax.swing.JFrame {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
-                try {
-                    new MinuLogException(ex, this.getClass()).writeLog();
-                } catch (CorruptExceptionLog ex1) {
-                    System.out.println(ex1.toString());
-                }
             }
             switch (cbxType.getSelectedIndex()) {
                 case 0:
@@ -82,11 +73,6 @@ public class MainForm extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         lstImages.setModel(dlm);
         this.setLocationRelativeTo(null);
-        try {
-            Configuration.Instance().setLogInfopath("AutoRecognizationLog");
-        } catch (InvalidFolderException ex) {
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -328,11 +314,6 @@ public class MainForm extends javax.swing.JFrame {
             jaiRecognitionctr.set(image);
             jaiRecognitionctr.repaint();
         } catch (Exception ex) {
-            try {
-                new MinuLogException(ex, this.getClass()).writeLog();
-            } catch (CorruptExceptionLog ex1) {
-                System.out.println(ex1.toString());
-            }
         }
     }
 
@@ -344,7 +325,6 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkAuto;
