@@ -26,6 +26,11 @@ public class ImageDisplayer extends DisplayJAI {
     private Point NewPoint = new Point(0, 0);
     private boolean completeDrag = false;
     private Rectangle rec;
+    private String config = "";
+
+    public String getConfig() {
+        return config;
+    }
 
     public Rectangle getRec() {
         return rec;
@@ -60,6 +65,7 @@ public class ImageDisplayer extends DisplayJAI {
             sb.append(relateX);
             sb.append(", ");
             sb.append(relateY);
+            config=sb.toString();
             AnchorRecognitionForm.Instance().setTextAxis("Axis: " + sb.toString());
         } else {
             g.setColor(new Color(255, 0, 0, 128));

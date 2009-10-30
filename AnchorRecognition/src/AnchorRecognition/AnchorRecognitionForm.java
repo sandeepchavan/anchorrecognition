@@ -10,10 +10,17 @@
  */
 package AnchorRecognition;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +32,7 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
     private String imgpathglobal = "";
     private TiffImageProcessing tiff = new TiffImageProcessing();
     private static AnchorRecognitionForm instance = null;
+    private StringBuilder sb = new StringBuilder();
 
     public static AnchorRecognitionForm Instance() {
         if (instance == null) {
@@ -33,7 +41,7 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         return instance;
     }
 
-    public void setTextAxis(String value){
+    public void setTextAxis(String value) {
         lblAxis.setText(value);
         lblAxis.updateUI();
     }
@@ -55,6 +63,8 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         pnlPanel = new javax.swing.JPanel();
         cmdLoadImage = new javax.swing.JButton();
         lblAxis = new javax.swing.JLabel();
+        cmdSave = new javax.swing.JButton();
+        cmdSaveConfig = new javax.swing.JButton();
         scrImage = new javax.swing.JScrollPane();
         imageDisplayer = new AnchorRecognition.ImageDisplayer();
 
@@ -73,22 +83,41 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         lblAxis.setText("Axis: ");
         lblAxis.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        cmdSave.setText("Accept");
+        cmdSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdSaveActionPerformed(evt);
+            }
+        });
+
+        cmdSaveConfig.setText("Save");
+        cmdSaveConfig.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdSaveConfigActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlPanelLayout = new javax.swing.GroupLayout(pnlPanel);
         pnlPanel.setLayout(pnlPanelLayout);
         pnlPanelLayout.setHorizontalGroup(
             pnlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPanelLayout.createSequentialGroup()
-                .addComponent(cmdLoadImage)
+                .addComponent(cmdLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblAxis, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addComponent(lblAxis, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdSave)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdSaveConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pnlPanelLayout.setVerticalGroup(
             pnlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlPanelLayout.createSequentialGroup()
                 .addGroup(pnlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdLoadImage)
-                    .addComponent(lblAxis))
+                    .addComponent(lblAxis, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdSave)
+                    .addComponent(cmdSaveConfig))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -96,7 +125,7 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         imageDisplayer.setLayout(imageDisplayerLayout);
         imageDisplayerLayout.setHorizontalGroup(
             imageDisplayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 807, Short.MAX_VALUE)
+            .addGap(0, 830, Short.MAX_VALUE)
         );
         imageDisplayerLayout.setVerticalGroup(
             imageDisplayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,10 +138,10 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
+            .addGroup(pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(scrImage, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+                    .addComponent(scrImage, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
                     .addComponent(pnlPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -143,6 +172,24 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
     private void cmdLoadImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoadImageActionPerformed
         ChooseFileImage();
     }//GEN-LAST:event_cmdLoadImageActionPerformed
+
+    private void cmdSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSaveActionPerformed
+        sb.append(imageDisplayer.getConfig());
+        sb.append("\n");
+    }//GEN-LAST:event_cmdSaveActionPerformed
+
+    private void cmdSaveConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSaveConfigActionPerformed
+        try {
+            Writer output = null;
+            File file = new File("write.txt");
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(sb.toString());
+            output.close();
+            JOptionPane.showMessageDialog(this, sb.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(AnchorRecognitionForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_cmdSaveConfigActionPerformed
 
     private void ChooseFileImage() {
         chooser.setCurrentDirectory(new File("D:\\EBook\\OCR\\Image\\new Project"));
@@ -179,6 +226,8 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdLoadImage;
+    private javax.swing.JButton cmdSave;
+    private javax.swing.JButton cmdSaveConfig;
     private AnchorRecognition.ImageDisplayer imageDisplayer;
     private javax.swing.JLabel lblAxis;
     private javax.swing.JPanel pnlMain;
