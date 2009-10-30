@@ -10,17 +10,18 @@
  */
 package AnchorRecognition;
 
+import java.awt.Toolkit;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -47,7 +48,13 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
     }
 
     private AnchorRecognitionForm() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
         initComponents();
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setLocationRelativeTo(null);
     }
 
     /** This method is called from within the constructor to
@@ -179,24 +186,34 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cmdSaveActionPerformed
 
     private void cmdSaveConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdSaveConfigActionPerformed
+        writeTemplete();
+    }//GEN-LAST:event_cmdSaveConfigActionPerformed
+
+    private void writeTemplete() {
         try {
             Writer output = null;
-            File file = new File("write.txt");
+            File file = new File("FormTemplete.txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
             output = new BufferedWriter(new FileWriter(file));
             output.write(sb.toString());
             output.close();
             JOptionPane.showMessageDialog(this, sb.toString());
         } catch (IOException ex) {
-            Logger.getLogger(AnchorRecognitionForm.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_cmdSaveConfigActionPerformed
+    }
 
     private void ChooseFileImage() {
-        chooser.setCurrentDirectory(new File("D:\\EBook\\OCR\\Image\\new Project"));
+        String defaultpath = Configuration.Instance().readConfig();
+        if (!defaultpath.equals("")) {
+            chooser.setCurrentDirectory(new File(defaultpath));
+        }
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             imgpathglobal = chooser.getSelectedFile().getAbsolutePath();
             setImage(imgpathglobal);
+            Configuration.Instance().writeConfig(chooser.getSelectedFile().getParent());
         }
     }
 
