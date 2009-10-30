@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="pnlMain" alignment="0" max="32767" attributes="0"/>
+          <Component id="pnlMain" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -38,13 +38,13 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="scrImage" alignment="0" pref="809" max="32767" attributes="0"/>
-                      <Component id="pnlPanel" alignment="0" max="32767" attributes="0"/>
+                      <Component id="scrImage" alignment="0" min="0" pref="0" max="32767" attributes="2"/>
+                      <Component id="pnlPanel" alignment="0" max="32767" attributes="2"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -78,10 +78,13 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="cmdLoadImage" min="-2" max="-2" attributes="0"/>
+                      <Component id="cmdLoadImage" min="-2" pref="89" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="lblAxis" min="-2" pref="580" max="-2" attributes="0"/>
-                      <EmptySpace pref="112" max="32767" attributes="0"/>
+                      <Component id="lblAxis" min="-2" pref="557" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmdSave" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="cmdSaveConfig" min="-2" pref="62" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -90,7 +93,9 @@
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="cmdLoadImage" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="lblAxis" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblAxis" alignment="3" min="-2" pref="21" max="-2" attributes="0"/>
+                          <Component id="cmdSave" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cmdSaveConfig" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="32767" attributes="0"/>
                   </Group>
@@ -116,6 +121,22 @@
                 </Property>
               </Properties>
             </Component>
+            <Component class="javax.swing.JButton" name="cmdSave">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Accept"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdSaveActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="cmdSaveConfig">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Save"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdSaveConfigActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JScrollPane" name="scrImage">
@@ -127,7 +148,7 @@
               <Layout>
                 <DimensionLayout dim="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="807" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="830" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
                 <DimensionLayout dim="1">
