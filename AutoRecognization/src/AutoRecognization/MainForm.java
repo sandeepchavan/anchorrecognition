@@ -15,8 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.DefaultListModel;
@@ -108,7 +106,7 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         txtRecognization.setColumns(20);
-        txtRecognization.setFont(new java.awt.Font("Arial", 1, 18));
+        txtRecognization.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txtRecognization.setLineWrap(true);
         txtRecognization.setRows(5);
         jspText.setViewportView(txtRecognization);
@@ -166,7 +164,7 @@ public class MainForm extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jspImageRecognition, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 782, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                             .addComponent(cmdLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                             .addComponent(cmdRecognize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
