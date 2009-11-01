@@ -27,8 +27,8 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jspImageRecognition" alignment="0" pref="782" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButton1" pref="81" max="32767" attributes="2"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="jButton1" pref="81" max="32767" attributes="1"/>
                           <Component id="cmdLoad" pref="81" max="32767" attributes="1"/>
                           <Component id="cmdRecognize" alignment="0" max="32767" attributes="1"/>
                       </Group>
