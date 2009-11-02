@@ -20,6 +20,8 @@ import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -32,6 +34,7 @@ public class MainForm extends javax.swing.JFrame {
     private DefaultListModel dlm = new DefaultListModel();
     private TiffImageProcessing tiff = new TiffImageProcessing();
     private StringBuilder contentOCR = new StringBuilder();
+    private StringBuilder failcontentOCR = new StringBuilder();
     ActionListener actionListener = new ActionListener() {
 
         public void actionPerformed(ActionEvent actionEvent) {
@@ -58,6 +61,10 @@ public class MainForm extends javax.swing.JFrame {
 
     /** Creates new form MainForm */
     public MainForm() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception ex) {
+        }
         initComponents();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         lstImages.setModel(dlm);
@@ -200,11 +207,11 @@ public class MainForm extends javax.swing.JFrame {
     private void cmdLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoadActionPerformed
         contentOCR = new StringBuilder();
         ChooseFileImage();
+        cmdRecognize.setEnabled(true);
 }//GEN-LAST:event_cmdLoadActionPerformed
 
     private void cmdRecognizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRecognizeActionPerformed
         timer.start();
-
 }//GEN-LAST:event_cmdRecognizeActionPerformed
 
     private void lstImagesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstImagesValueChanged
@@ -212,6 +219,9 @@ public class MainForm extends javax.swing.JFrame {
             setImage(lstImages.getSelectedValue().toString());
             jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
             timer.start();
+            if (lstImages.getSelectedIndex() == (dlm.getSize() - 1)) {
+                chkAuto.setSelected(false);
+            }
         }
 }//GEN-LAST:event_lstImagesValueChanged
 
@@ -232,8 +242,10 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lstImagesKeyPressed
 
     private void cbxTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTypeItemStateChanged
-        jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
-        timer.start();
+        if (dlm.getSize() > 0) {
+            jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
+            timer.start();
+        }
     }//GEN-LAST:event_cbxTypeItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -260,7 +272,6 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private void recognized() {
-
         String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
 
         char[] carr = str.toCharArray();
@@ -280,15 +291,26 @@ public class MainForm extends javax.swing.JFrame {
         }
         str = str.replace("A", "");
         txtRecognization.setText(str);
+        File focr = new File(lstImages.getSelectedValue().toString());
+        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
         if (str.length() != 17) {
             txtRecognization.setForeground(Color.RED);
-            timer.stop();
+            failcontentOCR.append(strpath);
+            failcontentOCR.append(";");
+            failcontentOCR.append(str);
+            failcontentOCR.append("\n");
         } else {
             txtRecognization.setForeground(Color.BLACK);
-            contentOCR.append(lstImages.getSelectedValue());
+            contentOCR.append(strpath);
             contentOCR.append(";");
             contentOCR.append(str);
             contentOCR.append("\n");
+        }
+        if (lstImages.getSelectedIndex() == (dlm.getSize() - 1)) {
+            Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), failcontentOCR.toString());
+            failcontentOCR = new StringBuilder("");
+            Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), contentOCR.toString());
+            contentOCR = new StringBuilder("");
         }
     }
 

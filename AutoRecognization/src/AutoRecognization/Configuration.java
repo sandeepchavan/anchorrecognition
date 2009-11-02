@@ -42,6 +42,34 @@ public class Configuration {
         }
     }
 
+    public void writeFailResult(String name, String value) {
+        try {
+            Writer output = null;
+            File file = new File("FailRecognition_" + name + ".txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(value);
+            output.close();
+        } catch (IOException ex) {
+        }
+    }
+
+    public void writeCorrectResult(String name, String value) {
+        try {
+            Writer output = null;
+            File file = new File("CorrectRecognition_" + name + ".txt");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(value);
+            output.close();
+        } catch (IOException ex) {
+        }
+    }
+
     public String readConfig() {
         String ret = "";
         try {
@@ -62,10 +90,15 @@ public class Configuration {
         String ret = "";
         try {
             BufferedReader input = null;
+            StringBuilder contents = new StringBuilder();
             File file = new File("FormTemplete.txt");
             if (file.exists()) {
                 input = new BufferedReader(new FileReader(file));
-                ret = input.readLine();
+                while ((ret = input.readLine()) != null) {
+                    contents.append(ret);
+                    contents.append(System.getProperty("line.separator"));
+                }
+                ret = contents.toString();
                 input.close();
             }
         } catch (IOException ex) {
