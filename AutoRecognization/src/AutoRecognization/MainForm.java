@@ -38,14 +38,10 @@ public class MainForm extends javax.swing.JFrame {
     ActionListener actionListener = new ActionListener() {
 
         public void actionPerformed(ActionEvent actionEvent) {
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException ex) {
-            }
             jspImageRecognition.getVerticalScrollBar().setValue(jspImageRecognition.getVerticalScrollBar().getMaximum());
             jspImageRecognition.getHorizontalScrollBar().setValue(jspImageRecognition.getHorizontalScrollBar().getMaximum());
-            jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
-            recognized();
+            matchForm();
+            writeResult();
             if (chkAuto.isSelected() && lstImages.getSelectedIndex() >= dlm.getSize() - 1) {
                 timer.stop();
             }
@@ -79,7 +75,9 @@ public class MainForm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         cmdLoad = new javax.swing.JButton();
+        chkAuto = new javax.swing.JCheckBox();
         cmdRecognize = new javax.swing.JButton();
         jspText = new javax.swing.JScrollPane();
         txtRecognization = new javax.swing.JTextArea();
@@ -89,7 +87,6 @@ public class MainForm extends javax.swing.JFrame {
         lstImages = new javax.swing.JList();
         cbxType = new javax.swing.JComboBox();
         jButton1 = new javax.swing.JButton();
-        chkAuto = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,6 +96,8 @@ public class MainForm extends javax.swing.JFrame {
                 cmdLoadActionPerformed(evt);
             }
         });
+
+        chkAuto.setText("Auto");
 
         cmdRecognize.setText("Recognize");
         cmdRecognize.addActionListener(new java.awt.event.ActionListener() {
@@ -154,51 +153,60 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
-        chkAuto.setText("Auto");
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jspImageRecognition, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 782, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jspImageRecognition, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 792, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                             .addComponent(cmdLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                            .addComponent(cmdRecognize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cmdRecognize))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jspText, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                        .addComponent(jspText, javax.swing.GroupLayout.DEFAULT_SIZE, 174, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(chkAuto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbxType, 0, 128, Short.MAX_VALUE))))
+                        .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 341, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbxType, 0, 178, Short.MAX_VALUE)
+                            .addComponent(chkAuto, javax.swing.GroupLayout.DEFAULT_SIZE, 178, Short.MAX_VALUE))))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                    .addComponent(jspText, 0, 81, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 92, Short.MAX_VALUE)
+                    .addComponent(jspText, 0, 92, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cmdLoad)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdRecognize)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(chkAuto)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 488, Short.MAX_VALUE)
+                .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -217,7 +225,6 @@ public class MainForm extends javax.swing.JFrame {
     private void lstImagesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstImagesValueChanged
         if (lstImages.getSelectedValue() != null) {
             setImage(lstImages.getSelectedValue().toString());
-            jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
             timer.start();
             if (lstImages.getSelectedIndex() == (dlm.getSize() - 1)) {
                 chkAuto.setSelected(false);
@@ -242,10 +249,10 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lstImagesKeyPressed
 
     private void cbxTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTypeItemStateChanged
-        if (dlm.getSize() > 0) {
-            jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
-            timer.start();
-        }
+        /*if (dlm.getSize() > 0) {
+        jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
+        timer.start();
+        }*/
     }//GEN-LAST:event_cbxTypeItemStateChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -271,7 +278,42 @@ public class MainForm extends javax.swing.JFrame {
         }
     }
 
-    private void recognized() {
+    private void matchForm() {
+        File focr = new File(lstImages.getSelectedValue().toString());
+        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
+        String ret = "";
+        for (int i = 0; i < cbxType.getItemCount(); i++) {
+            jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
+            ret = getOCRforMatching();
+            if (ret.length() == 17) {
+                txtRecognization.setForeground(Color.BLACK);
+                contentOCR.append(strpath);
+                contentOCR.append(";");
+                contentOCR.append(ret);
+                contentOCR.append("\n");
+                txtRecognization.setText(ret);
+                return;
+            }
+        }
+        txtRecognization.setForeground(Color.RED);
+        txtRecognization.setText(ret);
+        failcontentOCR.append(strpath);
+        failcontentOCR.append(";");
+        failcontentOCR.append(ret);
+        failcontentOCR.append("\n");
+    }
+
+    private void writeResult() {
+        if (lstImages.getSelectedIndex() == (dlm.getSize() - 1)) {
+            File focr = new File(lstImages.getSelectedValue().toString());
+            Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), failcontentOCR.toString());
+            failcontentOCR = new StringBuilder("");
+            Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), contentOCR.toString());
+            contentOCR = new StringBuilder("");
+        }
+    }
+
+    private String getOCRforMatching() {
         String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
 
         char[] carr = str.toCharArray();
@@ -290,30 +332,61 @@ public class MainForm extends javax.swing.JFrame {
             }
         }
         str = str.replace("A", "");
-        txtRecognization.setText(str);
-        File focr = new File(lstImages.getSelectedValue().toString());
-        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
-        if (str.length() != 17) {
-            txtRecognization.setForeground(Color.RED);
-            failcontentOCR.append(strpath);
-            failcontentOCR.append(";");
-            failcontentOCR.append(str);
-            failcontentOCR.append("\n");
-        } else {
-            txtRecognization.setForeground(Color.BLACK);
-            contentOCR.append(strpath);
-            contentOCR.append(";");
-            contentOCR.append(str);
-            contentOCR.append("\n");
-        }
-        if (lstImages.getSelectedIndex() == (dlm.getSize() - 1)) {
-            Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), failcontentOCR.toString());
-            failcontentOCR = new StringBuilder("");
-            Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), contentOCR.toString());
-            contentOCR = new StringBuilder("");
-        }
+        return str;
     }
 
+    /* private void recognized() {
+    String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
+
+    char[] carr = str.toCharArray();
+    for (char c : carr) {
+    if (!Character.isLetterOrDigit(c) && c != 'A') {
+    str = str.replace(String.valueOf(c), "");
+    }
+    }
+
+    String arr[] = str.split("A");
+
+    for (String temp : arr) {
+    if (temp.length() >= 17) {
+    str = temp.replace(" ", "");
+    break;
+    }
+    }
+    str = str.replace("A", "");
+    txtRecognization.setText(str);
+    File focr = new File(lstImages.getSelectedValue().toString());
+    String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
+    if (str.length() != 17) {
+    String retval = matchForm();
+    if (retval.length() != 17) {
+    txtRecognization.setForeground(Color.RED);
+    failcontentOCR.append(strpath);
+    failcontentOCR.append(";");
+    failcontentOCR.append(str);
+    failcontentOCR.append("\n");
+    } else {
+    txtRecognization.setText(retval);
+    txtRecognization.setForeground(Color.BLACK);
+    contentOCR.append(strpath);
+    contentOCR.append(";");
+    contentOCR.append(str);
+    contentOCR.append("\n");
+    }
+    } else {
+    txtRecognization.setForeground(Color.BLACK);
+    contentOCR.append(strpath);
+    contentOCR.append(";");
+    contentOCR.append(str);
+    contentOCR.append("\n");
+    }
+    if (lstImages.getSelectedIndex() == (dlm.getSize() - 1)) {
+    Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), failcontentOCR.toString());
+    failcontentOCR = new StringBuilder("");
+    Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), contentOCR.toString());
+    contentOCR = new StringBuilder("");
+    }
+    }*/
     private void setImage(String filename) {
         PlanarImage image = null;
         this.repaint();
@@ -345,6 +418,7 @@ public class MainForm extends javax.swing.JFrame {
     private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
     private javax.swing.JButton jButton1;
+    private javax.swing.JPanel jPanel1;
     private AutoRecognization.jaiRecognition jaiRecognitionctr;
     private javax.swing.JScrollPane jspImageRecognition;
     private javax.swing.JScrollPane jspImages;
