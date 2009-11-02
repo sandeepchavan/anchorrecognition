@@ -305,21 +305,38 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private String getOCRforMatching() {
-        String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
+        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
         char[] carr = str.toCharArray();
         for (char c : carr) {
-            if (!Character.isLetterOrDigit(c) && c != 'A') {
-                str = str.replace(String.valueOf(c), "");
-            }
+        if (!Character.isLetterOrDigit(c) && c != 'A') {
+        str = str.replace(String.valueOf(c), "");
+        }
         }
         String arr[] = str.split("A");
         for (String temp : arr) {
+        if (temp.length() >= 17) {
+        str = temp.replace(" ", "");
+        break;
+        }
+        }
+        str = str.replace("A", "");
+        return str;*/
+        String str = jaiRecognitionctr.RecognizeICRImage().get(0);
+        System.out.println(str);
+        char[] carr = str.toLowerCase().toCharArray();
+        StringBuffer strBuff = new StringBuffer();
+        for (char c : carr) {
+            if (Character.isDigit(c)) {
+                strBuff.append(c);
+            }
+        }
+        String arr[] = strBuff.toString().split("\n");
+        for (String temp : arr) {
             if (temp.length() >= 17) {
-                str = temp.replace(" ", "");
+                str = temp;
                 break;
             }
         }
-        str = str.replace("A", "");
         return str;
     }
 
