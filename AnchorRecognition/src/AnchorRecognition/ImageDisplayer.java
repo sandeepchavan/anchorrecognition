@@ -55,15 +55,15 @@ public class ImageDisplayer extends DisplayJAI {
         if (completeDrag) {
             g.setColor(new Color(255, 0, 0, 128));
             g.fillRect(rec.x, rec.y, rec.width, rec.height);
-            int relateX = this.getWidth() - rec.x + rec.width;
-            int relateY = this.getHeight() - rec.y + rec.height;
+            int relateX = this.getWidth() - rec.x;
+            int relateY = this.getHeight() - rec.y;
             StringBuilder sb = new StringBuilder();
             sb.append(rec.width);
-            sb.append(", ");
+            sb.append(",");
             sb.append(rec.height);
-            sb.append(", ");
+            sb.append(",");
             sb.append(relateX);
-            sb.append(", ");
+            sb.append(",");
             sb.append(relateY);
             config=sb.toString();
             AnchorRecognitionForm.Instance().setTextAxis("Axis: " + sb.toString());
