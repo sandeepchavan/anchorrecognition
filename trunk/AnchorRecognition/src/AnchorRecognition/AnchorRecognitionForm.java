@@ -196,7 +196,7 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
             if (!file.exists()) {
                 file.createNewFile();
             }
-            output = new BufferedWriter(new FileWriter(file));
+            output = new BufferedWriter(new FileWriter(file, true));
             output.write(sb.toString());
             output.close();
             JOptionPane.showMessageDialog(this, sb.toString());
