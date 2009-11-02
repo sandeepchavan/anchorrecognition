@@ -88,7 +88,7 @@ public class jaiRecognition extends DisplayJAI {
         if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
             scaleX = scaleX + 20;
         }
-        calculate(TypeNumer.RightBottom);
+        //calculate(TypeNumer.RightBottom);
     }//GEN-LAST:event_formKeyPressed
 
     private void formMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseEntered
@@ -118,31 +118,19 @@ public class jaiRecognition extends DisplayJAI {
         }
     }
 
-    public void calculate(TypeNumer type) {
+    public void calculate(String type) {
+        String [] strs = type.split(",");
         int y = 0;
         int x = 0;
-        switch (type) {
-            case RightBottom:
-                y = this.getHeight() - scaleY;
-                x = this.getWidth() - scaleX;
-                newrecanchor.x = x;
-                newrecanchor.y = y;
-                newrecanchor.width = 650;
-                newrecanchor.height = 120;
-                break;
-            case LeftBottom:
-                y = this.getHeight() - 280;
-                x = 100;
-                newrecanchor.x = x;
-                newrecanchor.y = y;
-                newrecanchor.width = 1000;
-                newrecanchor.height = 300;
-                break;
-        }
+        y = this.getHeight() - Integer.valueOf(strs[3].trim());
+        x = this.getWidth() - Integer.valueOf(strs[2].trim());
+        newrecanchor.x = x;
+        newrecanchor.y = y;
+        newrecanchor.width = Integer.valueOf(strs[0].trim());
+        newrecanchor.height = Integer.valueOf(strs[1].trim());
         calcomplete = true;
         repaint();
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }

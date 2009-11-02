@@ -39,18 +39,9 @@ public class MainForm extends javax.swing.JFrame {
                 Thread.sleep(50);
             } catch (InterruptedException ex) {
             }
-            switch (cbxType.getSelectedIndex()) {
-                case 0:
-                    jspImageRecognition.getVerticalScrollBar().setValue(jspImageRecognition.getVerticalScrollBar().getMaximum());
-                    jspImageRecognition.getHorizontalScrollBar().setValue(jspImageRecognition.getHorizontalScrollBar().getMaximum());
-                    break;
-                case 1:
-                    jspImageRecognition.getVerticalScrollBar().setValue(jspImageRecognition.getVerticalScrollBar().getMaximum());
-                    jspImageRecognition.getHorizontalScrollBar().setValue(0);
-                    break;
-            }
-
-            jaiRecognitionctr.calculate(jaiRecognition.TypeNumer.valueOf(cbxType.getSelectedItem().toString()));
+            jspImageRecognition.getVerticalScrollBar().setValue(jspImageRecognition.getVerticalScrollBar().getMaximum());
+            jspImageRecognition.getHorizontalScrollBar().setValue(jspImageRecognition.getHorizontalScrollBar().getMaximum());
+            jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
             recognized();
             if (chkAuto.isSelected() && lstImages.getSelectedIndex() >= dlm.getSize() - 1) {
                 timer.stop();
@@ -71,6 +62,10 @@ public class MainForm extends javax.swing.JFrame {
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         lstImages.setModel(dlm);
         this.setLocationRelativeTo(null);
+        String[] type = Configuration.Instance().readTemplete().split("\n");
+        for (String str : type) {
+            cbxType.addItem(str);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +101,7 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         txtRecognization.setColumns(20);
-        txtRecognization.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        txtRecognization.setFont(new java.awt.Font("Arial", 1, 18));
         txtRecognization.setLineWrap(true);
         txtRecognization.setRows(5);
         jspText.setViewportView(txtRecognization);
@@ -139,7 +134,6 @@ public class MainForm extends javax.swing.JFrame {
         });
         jspImages.setViewportView(lstImages);
 
-        cbxType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "RightBottom", "LeftBottom", " " }));
         cbxType.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbxTypeItemStateChanged(evt);
@@ -216,7 +210,7 @@ public class MainForm extends javax.swing.JFrame {
     private void lstImagesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstImagesValueChanged
         if (lstImages.getSelectedValue() != null) {
             setImage(lstImages.getSelectedValue().toString());
-            jaiRecognitionctr.calculate(jaiRecognition.TypeNumer.valueOf(cbxType.getSelectedItem().toString()));
+            jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
             timer.start();
         }
 }//GEN-LAST:event_lstImagesValueChanged
@@ -238,7 +232,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lstImagesKeyPressed
 
     private void cbxTypeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbxTypeItemStateChanged
-        jaiRecognitionctr.calculate(jaiRecognition.TypeNumer.valueOf(cbxType.getSelectedItem().toString()));
+        jaiRecognitionctr.calculate(cbxType.getSelectedItem().toString());
         timer.start();
     }//GEN-LAST:event_cbxTypeItemStateChanged
 
