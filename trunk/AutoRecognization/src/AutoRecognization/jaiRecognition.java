@@ -119,7 +119,7 @@ public class jaiRecognition extends DisplayJAI {
     }
 
     public void calculate(String type) {
-        String [] strs = type.split(",");
+        String[] strs = type.split(",");
         int y = 0;
         int x = 0;
         y = this.getHeight() - Integer.valueOf(strs[3].trim());
