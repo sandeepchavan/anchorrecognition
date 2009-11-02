@@ -250,7 +250,8 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lstImagesKeyReleased
 
     private void ChooseFileImage() {
-        getChooser().setCurrentDirectory(new File("D:\\EBook\\OCR\\Image\\new Project"));
+        String defaultpath = Configuration.Instance().readConfig();
+        getChooser().setCurrentDirectory(new File(defaultpath));
         getDlm().clear();
         int returnVal = getChooser().showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -264,6 +265,7 @@ public class MainForm extends javax.swing.JFrame {
             if (getDlm().capacity() > 0) {
                 lstImages.setSelectedIndex(0);
             }
+            Configuration.Instance().writeConfig(chooser.getSelectedFile().getParent());
         }
     }
 
