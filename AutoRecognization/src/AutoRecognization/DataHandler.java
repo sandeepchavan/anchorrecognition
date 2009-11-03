@@ -21,13 +21,13 @@ public class DataHandler {
     private static DataHandler instance = null;
     private Connection cn = null;
 
-    public static DataHandler Instance(String username, String password) {
+    public static DataHandler Instance(String url, String username, String password) {
         if (instance == null) {
             instance = new DataHandler();
         }
         try {
             if (instance.cn == null || instance.cn.isClosed()) {
-                instance.connectDB(username, password);
+                instance.connectDB(url, username, password);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DataHandler.class.getName()).log(Level.SEVERE, null, ex);
@@ -35,10 +35,10 @@ public class DataHandler {
         return instance;
     }
 
-    private boolean connectDB(String username, String password) {
+    private boolean connectDB(String url, String username, String password) {
         try {
             Class.forName("org.postgresql.Driver");
-            cn = DriverManager.getConnection(Configuration.Instance().readConnection(), username, password);
+            cn = DriverManager.getConnection(url, username, password);
             return true;
         } catch (Exception ex) {
             return false;
@@ -66,7 +66,6 @@ public class DataHandler {
         } catch (Exception ex) {
             return false;
         } finally {
-            
         }
     }
 
