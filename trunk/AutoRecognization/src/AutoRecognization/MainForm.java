@@ -123,6 +123,12 @@ public class MainForm extends javax.swing.JFrame {
         cbxType = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Auto Recognition For Douglas Card");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         cmdLoad.setText("Load");
         cmdLoad.addActionListener(new java.awt.event.ActionListener() {
@@ -249,6 +255,10 @@ public class MainForm extends javax.swing.JFrame {
     private void lstImagesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstImagesKeyReleased
     }//GEN-LAST:event_lstImagesKeyReleased
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        DataHandler.Instance("gbs_douglas_card","gbs_doug#las_card$09pass%").closeConnection();
+    }//GEN-LAST:event_formWindowClosing
+
     private void ChooseFileImage() {
         String defaultpath = Configuration.Instance().readConfig();
         getChooser().setCurrentDirectory(new File(defaultpath));
@@ -283,6 +293,8 @@ public class MainForm extends javax.swing.JFrame {
                 getContentOCR().append(ret);
                 getContentOCR().append("\n");
                 txtRecognization.setText(ret);
+                cbxType.setSelectedIndex(i);
+                DataHandler.Instance("gbs_douglas_card","gbs_doug#las_card$09pass%").updOrinstData(focr.getAbsolutePath().substring(2), ret);
                 return;
             }
         }
@@ -305,39 +317,39 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private String getOCRforMatching() {
-        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
+        String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
         char[] carr = str.toCharArray();
         for (char c : carr) {
-        if (!Character.isLetterOrDigit(c) && c != 'A') {
-        str = str.replace(String.valueOf(c), "");
-        }
+            if (!Character.isLetterOrDigit(c) && c != 'A') {
+                str = str.replace(String.valueOf(c), "");
+            }
         }
         String arr[] = str.split("A");
         for (String temp : arr) {
-        if (temp.length() >= 17) {
-        str = temp.replace(" ", "");
-        break;
-        }
+            if (temp.length() >= 17) {
+                str = temp.replace(" ", "");
+                break;
+            }
         }
         str = str.replace("A", "");
-        return str;*/
-        String str = jaiRecognitionctr.RecognizeICRImage().get(0);
+        return str;
+        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0);
         System.out.println(str);
         char[] carr = str.toLowerCase().toCharArray();
         StringBuffer strBuff = new StringBuffer();
         for (char c : carr) {
-            if (Character.isDigit(c)) {
-                strBuff.append(c);
-            }
+        if (Character.isDigit(c)) {
+        strBuff.append(c);
+        }
         }
         String arr[] = strBuff.toString().split("\n");
         for (String temp : arr) {
-            if (temp.length() >= 17) {
-                str = temp;
-                break;
-            }
+        if (temp.length() >= 17) {
+        str = temp;
+        break;
         }
-        return str;
+        }
+        return str;*/
     }
 
     private void setImage(String filename) {

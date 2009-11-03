@@ -85,6 +85,22 @@ public class Configuration {
         }
     }
 
+     public String readConnection() {
+        String ret = "";
+        try {
+            BufferedReader input = null;
+            File file = new File("Connection.txt");
+            if (file.exists()) {
+                input = new BufferedReader(new FileReader(file));
+                ret = input.readLine();
+                input.close();
+            }
+        } catch (IOException ex) {
+        } finally {
+            return ret;
+        }
+    }
+
     public String readTemplete() {
         String ret = "";
         try {
