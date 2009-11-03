@@ -20,6 +20,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -90,7 +91,6 @@ public class MainForm extends javax.swing.JFrame {
     };
     javax.swing.Timer timer = new javax.swing.Timer(10, actionListener);
 
-    /** Creates new form MainForm */
     public MainForm() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -106,6 +106,136 @@ public class MainForm extends javax.swing.JFrame {
         }
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         arrcn = Configuration.Instance().readConnection().split(";");
+    }
+
+    private void ChooseFileImage() {
+        String defaultpath = Configuration.Instance().readConfig();
+        getChooser().setCurrentDirectory(new File(defaultpath));
+        getDlm().clear();
+        int returnVal = getChooser().showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            imgpathglobal = getChooser().getSelectedFile().getAbsolutePath();
+            File folder = new File(imgpathglobal);
+            for (File f : folder.listFiles()) {
+                if (f.getAbsolutePath().endsWith(".tif")) {
+                    getDlm().addElement(f.getAbsolutePath());
+                }
+            }
+            if (getDlm().capacity() > 0) {
+                lstImages.setSelectedIndex(0);
+            }
+            Configuration.Instance().writeConfig(chooser.getSelectedFile().getParent());
+        }
+    }
+
+    private void matchForm() {
+        File focr = new File(lstImages.getSelectedValue().toString());
+        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
+        String ret = "";
+        for (int i = 0; i < cbxType.getItemCount(); i++) {
+            jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
+            ret = getOCRforMatching();
+            if (ret.length() == 17) {
+                txtRecognization.setForeground(Color.BLACK);
+                getContentOCR().append(strpath);
+                getContentOCR().append(";");
+                getContentOCR().append(ret);
+                getContentOCR().append("\n");
+                txtRecognization.setText(ret);
+                cbxType.setSelectedIndex(i);
+                if (arrcn[3].equals("savedb") && chkAuto.isSelected()) {
+                    DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).updOrinstData(focr.getAbsolutePath().substring(2), ret);
+                }
+                return;
+            }
+        }
+        txtRecognization.setForeground(Color.RED);
+        txtRecognization.setText(ret);
+        getFailcontentOCR().append(strpath);
+        getFailcontentOCR().append(";");
+        getFailcontentOCR().append(ret);
+        getFailcontentOCR().append("\n");
+    }
+
+    private void writeResult() {
+        if (lstImages.getSelectedIndex() == (getDlm().getSize() - 1) && chkAuto.isSelected()) {
+            File focr = new File(lstImages.getSelectedValue().toString());
+            Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), getFailcontentOCR().toString());
+            failcontentOCR = null;
+            Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), getContentOCR().toString());
+            contentOCR = null;
+            unlockControl(true);
+            JOptionPane.showMessageDialog(this, "Recognition is completed!");
+        }
+    }
+
+    private String getOCRforMatching() {
+        String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
+        char[] carr = str.toCharArray();
+        for (char c : carr) {
+            if (!Character.isLetterOrDigit(c) && c != 'A') {
+                str = str.replace(String.valueOf(c), "");
+            }
+        }
+        String arr[] = str.split("A");
+        for (String temp : arr) {
+            if (temp.length() >= 17) {
+                str = temp.replace(" ", "");
+                break;
+            }
+        }
+        str = str.replace("A", "");
+        return str;
+        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0);
+        System.out.println(str);
+        char[] carr = str.toLowerCase().toCharArray();
+        StringBuffer strBuff = new StringBuffer();
+        for (char c : carr) {
+        if (Character.isDigit(c)) {
+        strBuff.append(c);
+        }
+        }
+        String arr[] = strBuff.toString().split("\n");
+        for (String temp : arr) {
+        if (temp.length() >= 17) {
+        str = temp;
+        break;
+        }
+        }
+        return str;*/
+    }
+
+    private void setImage(String filename) {
+        PlanarImage image = null;
+        this.repaint();
+        try {
+            try {
+                image = getTiff().readImage(filename, 0, 100, 0);
+                RandomIterFactory.create(image, null);
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
+            jaiRecognitionctr.img = new ImageIcon(image.getAsBufferedImage()).getImage();
+            jaiRecognitionctr.set(image);
+            jaiRecognitionctr.repaint();
+        } catch (Exception ex) {
+        }
+    }
+
+    private void unlockControl(Boolean lock) {
+        cmdLoad.setEnabled(lock);
+        cmdRecognize.setEnabled(lock);
+        lstImages.setEnabled(lock);
+        chkAuto.setSelected(!lock);
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                new MainForm().setVisible(true);
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -170,11 +300,6 @@ public class MainForm extends javax.swing.JFrame {
         lstImages.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
             public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
                 lstImagesValueChanged(evt);
-            }
-        });
-        lstImages.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                lstImagesKeyReleased(evt);
             }
         });
         jspImages.setViewportView(lstImages);
@@ -242,145 +367,19 @@ public class MainForm extends javax.swing.JFrame {
 
     private void cmdRecognizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRecognizeActionPerformed
         timer.start();
+        unlockControl(false);
 }//GEN-LAST:event_cmdRecognizeActionPerformed
 
     private void lstImagesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstImagesValueChanged
         if (lstImages.getSelectedValue() != null) {
             setImage(lstImages.getSelectedValue().toString());
             timer.start();
-            if (lstImages.getSelectedIndex() == (getDlm().getSize() - 1)) {
-                chkAuto.setSelected(false);
-            }
         }
 }//GEN-LAST:event_lstImagesValueChanged
-
-    private void lstImagesKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstImagesKeyReleased
-    }//GEN-LAST:event_lstImagesKeyReleased
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).closeConnection();
     }//GEN-LAST:event_formWindowClosing
-
-    private void ChooseFileImage() {
-        String defaultpath = Configuration.Instance().readConfig();
-        getChooser().setCurrentDirectory(new File(defaultpath));
-        getDlm().clear();
-        int returnVal = getChooser().showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            imgpathglobal = getChooser().getSelectedFile().getAbsolutePath();
-            File folder = new File(imgpathglobal);
-            for (File f : folder.listFiles()) {
-                if (f.getAbsolutePath().endsWith(".tif")) {
-                    getDlm().addElement(f.getAbsolutePath());
-                }
-            }
-            if (getDlm().capacity() > 0) {
-                lstImages.setSelectedIndex(0);
-            }
-            Configuration.Instance().writeConfig(chooser.getSelectedFile().getParent());
-        }
-    }
-
-    private void matchForm() {
-        File focr = new File(lstImages.getSelectedValue().toString());
-        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
-        String ret = "";
-        for (int i = 0; i < cbxType.getItemCount(); i++) {
-            jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
-            ret = getOCRforMatching();
-            if (ret.length() == 17) {
-                txtRecognization.setForeground(Color.BLACK);
-                getContentOCR().append(strpath);
-                getContentOCR().append(";");
-                getContentOCR().append(ret);
-                getContentOCR().append("\n");
-                txtRecognization.setText(ret);
-                cbxType.setSelectedIndex(i);
-                if (arrcn[3].equals("savedb") && chkAuto.isSelected()) {
-                    DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).updOrinstData(focr.getAbsolutePath().substring(2), ret);
-                }
-                return;
-            }
-        }
-        txtRecognization.setForeground(Color.RED);
-        txtRecognization.setText(ret);
-        getFailcontentOCR().append(strpath);
-        getFailcontentOCR().append(";");
-        getFailcontentOCR().append(ret);
-        getFailcontentOCR().append("\n");
-    }
-
-    private void writeResult() {
-        if (lstImages.getSelectedIndex() == (getDlm().getSize() - 1)) {
-            File focr = new File(lstImages.getSelectedValue().toString());
-            Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), getFailcontentOCR().toString());
-            failcontentOCR = null;
-            Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), getContentOCR().toString());
-            contentOCR = null;
-        }
-    }
-
-    private String getOCRforMatching() {
-        String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
-        char[] carr = str.toCharArray();
-        for (char c : carr) {
-            if (!Character.isLetterOrDigit(c) && c != 'A') {
-                str = str.replace(String.valueOf(c), "");
-            }
-        }
-        String arr[] = str.split("A");
-        for (String temp : arr) {
-            if (temp.length() >= 17) {
-                str = temp.replace(" ", "");
-                break;
-            }
-        }
-        str = str.replace("A", "");
-        return str;
-        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0);
-        System.out.println(str);
-        char[] carr = str.toLowerCase().toCharArray();
-        StringBuffer strBuff = new StringBuffer();
-        for (char c : carr) {
-        if (Character.isDigit(c)) {
-        strBuff.append(c);
-        }
-        }
-        String arr[] = strBuff.toString().split("\n");
-        for (String temp : arr) {
-        if (temp.length() >= 17) {
-        str = temp;
-        break;
-        }
-        }
-        return str;*/
-    }
-
-    private void setImage(String filename) {
-        PlanarImage image = null;
-        this.repaint();
-        try {
-            try {
-                image = getTiff().readImage(filename, 0, 100, 0);
-                RandomIterFactory.create(image, null);
-            } catch (Exception ex) {
-                System.out.println(ex);
-            }
-            jaiRecognitionctr.img = new ImageIcon(image.getAsBufferedImage()).getImage();
-            jaiRecognitionctr.set(image);
-            jaiRecognitionctr.repaint();
-        } catch (Exception ex) {
-        }
-    }
-
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new MainForm().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkAuto;
