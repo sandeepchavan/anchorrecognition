@@ -258,7 +258,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lstImagesKeyReleased
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        DataHandler.Instance(arrcn[0], arrcn[1],arrcn[2]).closeConnection();
+        DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).closeConnection();
     }//GEN-LAST:event_formWindowClosing
 
     private void ChooseFileImage() {
@@ -296,7 +296,9 @@ public class MainForm extends javax.swing.JFrame {
                 getContentOCR().append("\n");
                 txtRecognization.setText(ret);
                 cbxType.setSelectedIndex(i);
-                DataHandler.Instance(arrcn[0], arrcn[1],arrcn[2]).updOrinstData(focr.getAbsolutePath().substring(2), ret);
+                if (arrcn[3].equals("savedb") && chkAuto.isSelected()) {
+                    DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).updOrinstData(focr.getAbsolutePath().substring(2), ret);
+                }
                 return;
             }
         }
