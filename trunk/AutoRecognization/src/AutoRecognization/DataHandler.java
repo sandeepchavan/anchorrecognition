@@ -45,38 +45,6 @@ public class DataHandler {
         }
     }
 
-    public boolean updOrinstData(StartEntity ent) {
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            pstmt = cn.prepareStatement("select id from gbs_douglas_card.start where fullfilename1 = ?");
-            pstmt.setString(1, ent.getFullfilename1());
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                rs.close();
-                pstmt.close();
-                pstmt = cn.prepareStatement("update gbs_douglas_card.start set antragsnummer = ? where id = ?");
-                pstmt.setString(1, ent.getAntragsnummer());
-                pstmt.setLong(2, ent.getId());
-                pstmt.execute();
-                return true;
-            }
-            return false;
-        } catch (Exception ex) {
-            return false;
-        } finally {
-            try {
-                if (!rs.isClosed()) {
-                    rs.close();
-                }
-                if (!pstmt.isClosed()) {
-                    pstmt.close();
-                }
-            } catch (SQLException ex) {
-            }
-        }
-    }
-
     public boolean updOrinstData(String path, String value) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
