@@ -1,8 +1,5 @@
 package Networks;
 
-import java.io.*;
-import java.util.*;
-
 /**
  * TrainingSet
  * Copyright 2005 by Jeff Heaton(jeff@jeffheaton.com)
