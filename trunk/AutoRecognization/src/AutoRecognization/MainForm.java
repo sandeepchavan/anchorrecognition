@@ -34,6 +34,7 @@ public class MainForm extends javax.swing.JFrame {
     private TiffImageProcessing tiff = null;
     private StringBuilder contentOCR = null;
     private StringBuilder failcontentOCR = null;
+    private String[] arrcn = null;
 
     public JFileChooser getChooser() {
         if (chooser == null) {
@@ -104,6 +105,7 @@ public class MainForm extends javax.swing.JFrame {
             cbxType.addItem(str);
         }
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        arrcn = Configuration.Instance().readConnection().split(";");
     }
 
     @SuppressWarnings("unchecked")
@@ -256,7 +258,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_lstImagesKeyReleased
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        DataHandler.Instance("gbs_douglas_card","gbs_doug#las_card$09pass%").closeConnection();
+        DataHandler.Instance(arrcn[0], arrcn[1],arrcn[2]).closeConnection();
     }//GEN-LAST:event_formWindowClosing
 
     private void ChooseFileImage() {
@@ -294,7 +296,7 @@ public class MainForm extends javax.swing.JFrame {
                 getContentOCR().append("\n");
                 txtRecognization.setText(ret);
                 cbxType.setSelectedIndex(i);
-                DataHandler.Instance("gbs_douglas_card","gbs_doug#las_card$09pass%").updOrinstData(focr.getAbsolutePath().substring(2), ret);
+                DataHandler.Instance(arrcn[0], arrcn[1],arrcn[2]).updOrinstData(focr.getAbsolutePath().substring(2), ret);
                 return;
             }
         }
