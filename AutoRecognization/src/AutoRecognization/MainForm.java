@@ -306,6 +306,8 @@ public class MainForm extends javax.swing.JFrame {
         });
         jspImages.setViewportView(lstImages);
 
+        cbxType.setEnabled(false);
+
         cmdShow.setText("Show result");
         cmdShow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
