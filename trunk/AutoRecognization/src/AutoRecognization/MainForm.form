@@ -47,17 +47,18 @@
                       <Component id="jspImageRecognition" alignment="0" pref="936" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="cmdShow" max="32767" attributes="1"/>
                               <Component id="cmdLoad" pref="81" max="32767" attributes="1"/>
-                              <Component id="cmdRecognize" alignment="0" min="-2" max="-2" attributes="1"/>
+                              <Component id="cmdRecognize" alignment="0" max="32767" attributes="1"/>
                           </Group>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jspText" pref="220" max="32767" attributes="0"/>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="jspText" pref="222" max="32767" attributes="0"/>
-                          <EmptySpace min="-2" max="-2" attributes="0"/>
-                          <Component id="jspImages" pref="389" max="32767" attributes="0"/>
+                          <Component id="jspImages" pref="385" max="32767" attributes="0"/>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="cbxType" pref="226" max="32767" attributes="1"/>
-                              <Component id="chkAuto" alignment="0" pref="226" max="32767" attributes="1"/>
+                              <Component id="cbxType" pref="224" max="32767" attributes="1"/>
+                              <Component id="chkAuto" alignment="0" pref="224" max="32767" attributes="1"/>
                           </Group>
                       </Group>
                   </Group>
@@ -76,6 +77,8 @@
                           <Component id="cmdLoad" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Component id="cmdRecognize" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="cmdShow" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="cbxType" min="-2" max="-2" attributes="0"/>
@@ -177,6 +180,14 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="cmdShow">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Show result"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdShowActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
