@@ -4,11 +4,14 @@
  */
 package AutoRecognization;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +69,24 @@ public class DataHandler {
         } catch (Exception ex) {
             return false;
         } finally {
+        }
+    }
+
+    public List<StartEntity> getResultOCR(String path) {
+        List<StartEntity> lst = new ArrayList<StartEntity>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = cn.prepareStatement("select fullfilename1, antragsnummer from gbs_douglas_card.start " +
+                    "where filepath = ?");
+            pstmt.setString(1, path);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                lst.add(new StartEntity(rs.getString(1), rs.getString(2)));
+            }
+        } catch (Exception ex) {
+        } finally {
+            return lst;
         }
     }
 

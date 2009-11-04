@@ -225,6 +225,7 @@ public class MainForm extends javax.swing.JFrame {
     private void unlockControl(Boolean lock) {
         cmdLoad.setEnabled(lock);
         cmdRecognize.setEnabled(lock);
+        cmdShow.setEnabled(lock);
         lstImages.setEnabled(lock);
         chkAuto.setSelected(!lock);
     }
@@ -253,6 +254,7 @@ public class MainForm extends javax.swing.JFrame {
         jspImages = new javax.swing.JScrollPane();
         lstImages = new javax.swing.JList();
         cbxType = new javax.swing.JComboBox();
+        cmdShow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
@@ -304,6 +306,13 @@ public class MainForm extends javax.swing.JFrame {
         });
         jspImages.setViewportView(lstImages);
 
+        cmdShow.setText("Show result");
+        cmdShow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdShowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -314,16 +323,17 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(jspImageRecognition, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cmdShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmdLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
-                            .addComponent(cmdRecognize))
+                            .addComponent(cmdRecognize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jspText, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
+                        .addComponent(jspText, javax.swing.GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
+                        .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxType, 0, 226, Short.MAX_VALUE)
-                            .addComponent(chkAuto, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))))
+                            .addComponent(cbxType, 0, 224, Short.MAX_VALUE)
+                            .addComponent(chkAuto, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -336,7 +346,9 @@ public class MainForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cmdLoad)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdRecognize))
+                        .addComponent(cmdRecognize)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdShow))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -380,11 +392,21 @@ public class MainForm extends javax.swing.JFrame {
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).closeConnection();
     }//GEN-LAST:event_formWindowClosing
+
+    private void cmdShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdShowActionPerformed
+        if (dlm.getSize() > 0) {
+            String path = dlm.get(0).toString().substring(2);
+            File f = new File(path);
+            path = f.getParent().replace("\\", "/") + "/";
+            new ShowDataOCR(this, true, arrcn, path).setVisible(true);
+        }
+    }//GEN-LAST:event_cmdShowActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkAuto;
     private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
+    private javax.swing.JButton cmdShow;
     private javax.swing.JPanel jPanel1;
     private AutoRecognization.jaiRecognition jaiRecognitionctr;
     private javax.swing.JScrollPane jspImageRecognition;
