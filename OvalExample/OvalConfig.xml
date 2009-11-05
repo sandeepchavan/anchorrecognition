@@ -10,12 +10,16 @@
     <class type="Entities.Student" overwrite="false" applyFieldConstraintsToSetter="true">
         <field name="name">
             <notEmpty />
-            <length max="3" />
+            <length max="30" />
         </field>
 
         <field name="gender">
             <notEmpty />
             <length max="5" />
+            <assert lang="groovy" message="Gender must be [Mrs]">
+                <expr><![CDATA[_value == 'Mrs' && _this.name.contains('thi')]]>
+                </expr>
+            </assert>
         </field>
     </class>
 </oval>
