@@ -16,8 +16,11 @@
         <field name="gender">
             <notEmpty />
             <length max="5" />
-            <assert lang="groovy" message="Gender must be [Mrs]">
-                <expr><![CDATA[_value == 'Mrs' && _this.name.contains('thi')]]>
+            <assert lang="groovy">
+                <expr><![CDATA[
+                import javax.swing.JOptionPane
+                JOptionPane.showMessageDialog(null, "Hello from")
+                ]]>
                 </expr>
             </assert>
         </field>
