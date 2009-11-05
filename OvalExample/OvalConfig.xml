@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<oval
+  xmlns="http://oval.sf.net/oval-configuration"
+  xmlns:xsi="http://http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://oval.sf.net/oval-configuration http://oval.sourceforge.net/oval-configuration-1.3.xsd"
+>
+
+  <!-- define checks for the acme.model.User class -->
+  <!-- overwrite=false means already defined checks for this class will not be removed -->
+    <class type="Entities.Student" overwrite="false" applyFieldConstraintsToSetter="true">
+        <field name="name">
+            <notEmpty />
+            <length max="3" />
+        </field>
+
+        <field name="gender">
+            <notEmpty />
+            <length max="5" />
+        </field>
+    </class>
+</oval>
+
