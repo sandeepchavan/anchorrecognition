@@ -36,6 +36,14 @@ public class MainForm extends javax.swing.JFrame {
     private StringBuilder contentOCR = null;
     private StringBuilder failcontentOCR = null;
     private String[] arrcn = null;
+    private static MainForm instance = null;
+
+    public static MainForm Instance(){
+        if(instance==null){
+            instance = new MainForm();
+        }
+        return instance;
+    }
 
     public JFileChooser getChooser() {
         if (chooser == null) {
@@ -230,15 +238,6 @@ public class MainForm extends javax.swing.JFrame {
         chkAuto.setSelected(!lock);
     }
 
-    public static void main(String args[]) {
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new MainForm().setVisible(true);
-            }
-        });
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -256,7 +255,7 @@ public class MainForm extends javax.swing.JFrame {
         cbxType = new javax.swing.JComboBox();
         cmdShow = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
