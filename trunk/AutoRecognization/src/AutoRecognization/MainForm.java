@@ -135,7 +135,7 @@ public class MainForm extends javax.swing.JFrame {
         for (int i = 0; i < cbxType.getItemCount(); i++) {
             jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
             ret = getOCRforMatching();
-            if (ret.length() == 17) {
+            if (ret.length() == 17 && ret.startsWith("000")) {
                 txtRecognization.setForeground(Color.BLACK);
                 getContentOCR().append(strpath);
                 getContentOCR().append(";");
