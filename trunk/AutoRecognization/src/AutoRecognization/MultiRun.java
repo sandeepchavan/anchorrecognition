@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Date;
+import java.util.List;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.DefaultListModel;
@@ -271,6 +273,7 @@ public class MultiRun extends javax.swing.JFrame {
         cmdShow = new javax.swing.JButton();
         scrFolder = new javax.swing.JScrollPane();
         lstFolder = new javax.swing.JList();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
@@ -338,6 +341,13 @@ public class MultiRun extends javax.swing.JFrame {
         });
         scrFolder.setViewportView(lstFolder);
 
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -358,6 +368,7 @@ public class MultiRun extends javax.swing.JFrame {
                         .addComponent(scrFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton1)
                             .addComponent(chkAuto)
                             .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE))
@@ -370,8 +381,10 @@ public class MultiRun extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(chkAuto))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(chkAuto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(scrFolder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -437,12 +450,19 @@ public class MultiRun extends javax.swing.JFrame {
             lstImages.setSelectedIndex(0);
         }
     }//GEN-LAST:event_lstFolderValueChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        java.util.Date d = new java.util.Date();
+        List<String> lststr = DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).getNewProducts(new Date(d.getTime()));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkAuto;
     private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
     private javax.swing.JButton cmdShow;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private AutoRecognization.jaiRecognition jaiRecognitionctr;
     private javax.swing.JScrollPane jspImageRecognition;

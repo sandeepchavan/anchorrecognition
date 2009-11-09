@@ -6,6 +6,7 @@ package AutoRecognization;
 
 import java.io.File;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -83,6 +84,24 @@ public class DataHandler {
             rs = pstmt.executeQuery();
             while (rs.next()) {
                 lst.add(new StartEntity(rs.getString(1), rs.getString(2)));
+            }
+        } catch (Exception ex) {
+        } finally {
+            return lst;
+        }
+    }
+
+     public List<String> getNewProducts(Date date) {
+        List<String> lst = new ArrayList<String>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = cn.prepareStatement("select filepath from gbs_douglas_card.start " +
+                    "where createdtime = ?");
+            pstmt.setDate(1, date);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                lst.add(rs.getString(1));
             }
         } catch (Exception ex) {
         } finally {
