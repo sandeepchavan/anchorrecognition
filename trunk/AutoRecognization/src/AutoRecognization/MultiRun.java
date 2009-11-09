@@ -452,8 +452,7 @@ public class MultiRun extends javax.swing.JFrame {
     }//GEN-LAST:event_lstFolderValueChanged
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        java.util.Date d = new java.util.Date();
-        List<String> lststr = DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).getNewProducts(new Date(d.getTime()));
+        List<String> lststr = DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).getNewProducts(Date.valueOf("2009-11-06"));
     }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
