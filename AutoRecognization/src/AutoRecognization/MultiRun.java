@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
@@ -40,6 +41,14 @@ public class MultiRun extends javax.swing.JFrame {
     private StringBuilder failcontentOCR = null;
     private String[] arrcn = null;
     private static MultiRun instance = null;
+    private DownloadChecking dlc = null;
+
+    public DownloadChecking getDlc() {
+        if (dlc == null) {
+            dlc = new DownloadChecking(arrcn[0], arrcn[1], arrcn[2]);
+        }
+        return dlc;
+    }
 
     public static MultiRun Instance() {
         if (instance == null) {
@@ -92,6 +101,7 @@ public class MultiRun extends javax.swing.JFrame {
     ActionListener actionListener = new ActionListener() {
 
         public void actionPerformed(ActionEvent actionEvent) {
+
             jspImageRecognition.getVerticalScrollBar().setValue(jspImageRecognition.getVerticalScrollBar().getMaximum());
             jspImageRecognition.getHorizontalScrollBar().setValue(jspImageRecognition.getHorizontalScrollBar().getMaximum());
             matchForm();
@@ -273,7 +283,7 @@ public class MultiRun extends javax.swing.JFrame {
         cmdShow = new javax.swing.JButton();
         scrFolder = new javax.swing.JScrollPane();
         lstFolder = new javax.swing.JList();
-        jButton1 = new javax.swing.JButton();
+        cmdStartAuto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
@@ -341,10 +351,10 @@ public class MultiRun extends javax.swing.JFrame {
         });
         scrFolder.setViewportView(lstFolder);
 
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cmdStartAuto.setText("Start Auto");
+        cmdStartAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cmdStartAutoActionPerformed(evt);
             }
         });
 
@@ -367,10 +377,10 @@ public class MultiRun extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(scrFolder, javax.swing.GroupLayout.DEFAULT_SIZE, 323, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(chkAuto)
-                            .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(cbxType, 0, 124, Short.MAX_VALUE)
+                            .addComponent(cmdStartAuto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -384,7 +394,7 @@ public class MultiRun extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(chkAuto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1))
+                        .addComponent(cmdStartAuto))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(scrFolder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -436,8 +446,8 @@ public class MultiRun extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void cmdShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdShowActionPerformed
-        if (dlm.getSize() > 0) {
-            String path = dlm.get(0).toString().substring(2);
+        if (getDlm().getSize() > 0) {
+            String path = getDlm().get(0).toString().substring(2);
             File f = new File(path);
             path = f.getParent().replace("\\", "/") + "/";
             new ShowDataOCR(this, true, arrcn, path).setVisible(true);
@@ -446,22 +456,38 @@ public class MultiRun extends javax.swing.JFrame {
 
     private void lstFolderValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstFolderValueChanged
         loadListFiles();
-        if(dlm.size()>0){
+        if (getDlm().size() > 0) {
             lstImages.setSelectedIndex(0);
         }
     }//GEN-LAST:event_lstFolderValueChanged
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        List<String> lststr = DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).getNewProducts(Date.valueOf("2009-11-06"));
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void cmdStartAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdStartAutoActionPerformed
+        if (cmdStartAuto.getText().equals("Start Auto")) {
+            getDlc().start();
+            cmdStartAuto.setText("Stop Auto");
+        } else {
+            cmdStartAuto.setText("Start Auto");
+            getDlc().stop();
+        }
 
+    }//GEN-LAST:event_cmdStartAutoActionPerformed
+
+    public void setListFolderAuto(List<String> lststr) {
+        getDlmfolders().clear();
+        for (String str : lststr) {
+            getDlmfolders().addElement(str);
+        }
+        if (dlmfolders.size() > 0) {
+            lstFolder.setSelectedIndex(0);
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkAuto;
     private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
     private javax.swing.JButton cmdShow;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton cmdStartAuto;
     private javax.swing.JPanel jPanel1;
     private AutoRecognization.jaiRecognition jaiRecognitionctr;
     private javax.swing.JScrollPane jspImageRecognition;

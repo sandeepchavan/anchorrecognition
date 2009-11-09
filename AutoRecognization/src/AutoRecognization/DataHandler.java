@@ -91,8 +91,25 @@ public class DataHandler {
         }
     }
 
-     public List<String> getNewProducts(Date date) {
+    public List<String> getNewProducts(Date date) {
         List<String> lst = new ArrayList<String>();
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = cn.prepareStatement("select distinct filepath from gbs_douglas_card.start " +
+                    "where createdtime::date = ?");
+            pstmt.setDate(1, date);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                lst.add("P:/" + rs.getString(1));
+            }
+        } catch (Exception ex) {
+        } finally {
+            return lst;
+        }
+    }
+
+    public Boolean checkNewProducts(Date date) {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
@@ -100,13 +117,13 @@ public class DataHandler {
                     "where createdtime::date = ?");
             pstmt.setDate(1, date);
             rs = pstmt.executeQuery();
-            while (rs.next()) {
-                lst.add(rs.getString(1));
+            if (rs.next()) {
+                return true;
             }
+            return false;
         } catch (Exception ex) {
-        } finally {
-            return lst;
-        }
+            return false;
+        } 
     }
 
     public void closeConnection() {
