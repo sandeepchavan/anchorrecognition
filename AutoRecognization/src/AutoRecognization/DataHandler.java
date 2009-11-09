@@ -97,7 +97,7 @@ public class DataHandler {
         ResultSet rs = null;
         try {
             pstmt = cn.prepareStatement("select filepath from gbs_douglas_card.start " +
-                    "where createdtime = ?");
+                    "where createdtime::date = ?");
             pstmt.setDate(1, date);
             rs = pstmt.executeQuery();
             while (rs.next()) {
