@@ -43,7 +43,7 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
 
     public DownloadChecking getDlc() {
         if (dlc == null) {
-            dlc = DownloadChecking.Instance(arrcn[0], arrcn[1], arrcn[2], arrcn[5]);
+            dlc = DownloadChecking.Instance(arrcn[0], arrcn[1], arrcn[2]);
         }
         return dlc;
     }
@@ -135,14 +135,7 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
         }
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         arrcn = Configuration.Instance().readConnection().split(";");
-        MonitorDownload.Instance(arrcn[0], arrcn[1], arrcn[2], arrcn[5], arrcn[6]);
-
-        if (!arrcn[4].equals("auto")) {
-            cmdStartAuto.setEnabled(false);
-        } else {
-            cmdStartAuto.doClick();
-        }
-
+        cmdStartAuto.doClick();
     }
 
     private void ChooseFileImage() {
@@ -222,12 +215,14 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
             } else {
                 unlockControl(true);
                 setStatus("Recognition is completed at: " + new java.util.Date().toString());
+                cmdStartAuto.setText("Start Auto");
+                System.exit(0);
             }
         }
     }
 
     public void setStatus(String txt) {
-        StringBuilder sb  = new StringBuilder(txtStatus.getText());
+        StringBuilder sb = new StringBuilder(txtStatus.getText());
         sb.append("\n");
         sb.append(txt);
         txtStatus.setText(sb.toString());
@@ -271,7 +266,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
     }
 
     private void unlockControl(Boolean lock) {
-        cmdLoad.setEnabled(lock);
         cmdRecognize.setEnabled(lock);
         cmdShow.setEnabled(lock);
         lstImages.setEnabled(lock);
@@ -284,7 +278,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        cmdLoad = new javax.swing.JButton();
         chkAuto = new javax.swing.JCheckBox();
         cmdRecognize = new javax.swing.JButton();
         jspText = new javax.swing.JScrollPane();
@@ -306,13 +299,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
-            }
-        });
-
-        cmdLoad.setText("Load");
-        cmdLoad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdLoadActionPerformed(evt);
             }
         });
 
@@ -391,7 +377,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmdShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmdLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
                             .addComponent(cmdRecognize, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(2, 2, 2)
                         .addComponent(jspText, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
@@ -421,8 +406,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(scrFolder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(cmdLoad)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(cmdRecognize)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(cmdShow))
@@ -448,11 +431,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void cmdLoadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdLoadActionPerformed
-        ChooseFileImage();
-        cmdRecognize.setEnabled(true);
-}//GEN-LAST:event_cmdLoadActionPerformed
 
     private void cmdRecognizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdRecognizeActionPerformed
         timer.start();
@@ -488,11 +466,12 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
 
     private void cmdStartAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdStartAutoActionPerformed
         if (cmdStartAuto.getText().equals("Start Auto")) {
-            getDlc().start();
+            getDlc().setStart(true);
             cmdStartAuto.setText("Stop Auto");
         } else {
             cmdStartAuto.setText("Start Auto");
-            getDlc().stop();
+            getDlc().setStart(false);
+            getDlc().releaseDownloadChecking();
         }
     }//GEN-LAST:event_cmdStartAutoActionPerformed
 
@@ -515,7 +494,6 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
     private javax.swing.JCheckBox chkAuto;
-    private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
     private javax.swing.JButton cmdShow;
     private javax.swing.JButton cmdStartAuto;
