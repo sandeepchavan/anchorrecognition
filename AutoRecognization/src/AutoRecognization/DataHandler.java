@@ -101,7 +101,7 @@ public class DataHandler {
             pstmt.setDate(1, date);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                lst.add("P:/" + rs.getString(1));
+                lst.add("P:" + rs.getString(1));
             }
         } catch (Exception ex) {
         } finally {
@@ -123,7 +123,7 @@ public class DataHandler {
             return false;
         } catch (Exception ex) {
             return false;
-        } 
+        }
     }
 
     public void closeConnection() {

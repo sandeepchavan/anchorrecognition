@@ -40,6 +40,7 @@ public class Main extends javax.swing.JFrame {
         pnlMain = new javax.swing.JPanel();
         cmdSingle = new javax.swing.JButton();
         cmdMulti = new javax.swing.JButton();
+        cmdMultiFolderAuto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
@@ -59,6 +60,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        cmdMultiFolderAuto.setText("Multi Folders Auto");
+        cmdMultiFolderAuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdMultiFolderAutoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -68,7 +76,9 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(cmdSingle)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmdMulti)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdMultiFolderAuto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,7 +86,8 @@ public class Main extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdSingle)
-                    .addComponent(cmdMulti))
+                    .addComponent(cmdMulti)
+                    .addComponent(cmdMultiFolderAuto))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -102,6 +113,10 @@ public class Main extends javax.swing.JFrame {
        MultiRun.Instance().setVisible(true);
     }//GEN-LAST:event_cmdMultiActionPerformed
 
+    private void cmdMultiFolderAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMultiFolderAutoActionPerformed
+       MultiRunAutomatic.Instance().setVisible(true);
+    }//GEN-LAST:event_cmdMultiFolderAutoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -115,6 +130,7 @@ public class Main extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdMulti;
+    private javax.swing.JButton cmdMultiFolderAuto;
     private javax.swing.JButton cmdSingle;
     private javax.swing.JPanel pnlMain;
     // End of variables declaration//GEN-END:variables
