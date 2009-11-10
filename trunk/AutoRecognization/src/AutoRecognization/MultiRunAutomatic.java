@@ -14,8 +14,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
@@ -30,7 +28,7 @@ import javax.swing.UIManager;
  *
  * @author ddda
  */
-public class MultiRun extends javax.swing.JFrame {
+public class MultiRunAutomatic extends javax.swing.JFrame {
 
     private JFileChooser chooser = null;
     private String imgpathglobal = "";
@@ -40,11 +38,19 @@ public class MultiRun extends javax.swing.JFrame {
     private StringBuilder contentOCR = null;
     private StringBuilder failcontentOCR = null;
     private String[] arrcn = null;
-    private static MultiRun instance = null;
+    private static MultiRunAutomatic instance = null;
+    private DownloadChecking dlc = null;
 
-    public static MultiRun Instance() {
+    public DownloadChecking getDlc() {
+        if (dlc == null) {
+            dlc = DownloadChecking.Instance(arrcn[0], arrcn[1], arrcn[2], arrcn[5]);
+        }
+        return dlc;
+    }
+
+    public static MultiRunAutomatic Instance() {
         if (instance == null) {
-            instance = new MultiRun();
+            instance = new MultiRunAutomatic();
         }
         return instance;
     }
@@ -111,12 +117,13 @@ public class MultiRun extends javax.swing.JFrame {
     };
     javax.swing.Timer timer = new javax.swing.Timer(10, actionListener);
 
-    public MultiRun() {
+    private MultiRunAutomatic() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ex) {
         }
         initComponents();
+
         getChooser().setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         getChooser().setMultiSelectionEnabled(true);
         lstImages.setModel(getDlm());
@@ -128,6 +135,14 @@ public class MultiRun extends javax.swing.JFrame {
         }
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         arrcn = Configuration.Instance().readConnection().split(";");
+        MonitorDownload.Instance(arrcn[0], arrcn[1], arrcn[2], arrcn[5], arrcn[6]);
+
+        if (!arrcn[4].equals("auto")) {
+            cmdStartAuto.setEnabled(false);
+        } else {
+            cmdStartAuto.doClick();
+        }
+
     }
 
     private void ChooseFileImage() {
@@ -155,7 +170,7 @@ public class MultiRun extends javax.swing.JFrame {
         getDlm().clear();
         imgpathglobal = lstFolder.getSelectedValue().toString();
         File folder = new File(imgpathglobal);
-        for (File f : folder.listFiles()[0].listFiles()) {
+        for (File f : folder.listFiles()) {
             if (f.getAbsolutePath().endsWith(".tif")) {
                 getDlm().addElement(f.getAbsolutePath());
             }
@@ -206,9 +221,16 @@ public class MultiRun extends javax.swing.JFrame {
                 cmdRecognize.doClick();
             } else {
                 unlockControl(true);
-                JOptionPane.showMessageDialog(this, "Recognition is completed!");
+                setStatus("Recognition is completed at: " + new java.util.Date().toString());
             }
         }
+    }
+
+    public void setStatus(String txt) {
+        StringBuilder sb  = new StringBuilder(txtStatus.getText());
+        sb.append("\n");
+        sb.append(txt);
+        txtStatus.setText(sb.toString());
     }
 
     private String getOCRforMatching() {
@@ -275,6 +297,9 @@ public class MultiRun extends javax.swing.JFrame {
         cmdShow = new javax.swing.JButton();
         scrFolder = new javax.swing.JScrollPane();
         lstFolder = new javax.swing.JList();
+        cmdStartAuto = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtStatus = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
@@ -343,6 +368,18 @@ public class MultiRun extends javax.swing.JFrame {
         });
         scrFolder.setViewportView(lstFolder);
 
+        cmdStartAuto.setText("Start Auto");
+        cmdStartAuto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdStartAutoActionPerformed(evt);
+            }
+        });
+
+        txtStatus.setColumns(20);
+        txtStatus.setEditable(false);
+        txtStatus.setRows(5);
+        jScrollPane1.setViewportView(txtStatus);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -350,7 +387,8 @@ public class MultiRun extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cmdShow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(cmdLoad, javax.swing.GroupLayout.DEFAULT_SIZE, 81, Short.MAX_VALUE)
@@ -364,8 +402,9 @@ public class MultiRun extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(chkAuto)
-                            .addComponent(cbxType, 0, 124, Short.MAX_VALUE)))
-                    .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE))
+                            .addComponent(cbxType, 0, 124, Short.MAX_VALUE)
+                            .addComponent(cmdStartAuto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 936, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -376,7 +415,9 @@ public class MultiRun extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(chkAuto))
+                        .addComponent(chkAuto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdStartAuto))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(scrFolder, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanel1Layout.createSequentialGroup()
@@ -388,7 +429,9 @@ public class MultiRun extends javax.swing.JFrame {
                         .addComponent(jspText, 0, 81, Short.MAX_VALUE)
                         .addComponent(jspImages, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE)
+                .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -400,7 +443,7 @@ public class MultiRun extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 610, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 651, Short.MAX_VALUE)
         );
 
         pack();
@@ -443,6 +486,16 @@ public class MultiRun extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_lstFolderValueChanged
 
+    private void cmdStartAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdStartAutoActionPerformed
+        if (cmdStartAuto.getText().equals("Start Auto")) {
+            getDlc().start();
+            cmdStartAuto.setText("Stop Auto");
+        } else {
+            cmdStartAuto.setText("Start Auto");
+            getDlc().stop();
+        }
+    }//GEN-LAST:event_cmdStartAutoActionPerformed
+
     public void setListFolderAuto(List<String> lststr) {
         getDlmfolders().clear();
         for (String str : lststr) {
@@ -451,6 +504,13 @@ public class MultiRun extends javax.swing.JFrame {
         if (dlmfolders.size() > 0) {
             lstFolder.setSelectedIndex(0);
         }
+        try {
+            cmdRecognize.doClick();
+            lstFolder.updateUI();
+            lstImages.updateUI();
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
@@ -458,7 +518,9 @@ public class MultiRun extends javax.swing.JFrame {
     private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
     private javax.swing.JButton cmdShow;
+    private javax.swing.JButton cmdStartAuto;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private AutoRecognization.jaiRecognition jaiRecognitionctr;
     private javax.swing.JScrollPane jspImageRecognition;
     private javax.swing.JScrollPane jspImages;
@@ -467,5 +529,6 @@ public class MultiRun extends javax.swing.JFrame {
     private javax.swing.JList lstImages;
     private javax.swing.JScrollPane scrFolder;
     private javax.swing.JTextArea txtRecognization;
+    private javax.swing.JTextArea txtStatus;
     // End of variables declaration//GEN-END:variables
 }
