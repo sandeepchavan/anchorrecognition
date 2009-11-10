@@ -48,7 +48,6 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
                               <Component id="cmdShow" max="32767" attributes="1"/>
-                              <Component id="cmdLoad" pref="81" max="32767" attributes="1"/>
                               <Component id="cmdRecognize" alignment="0" max="32767" attributes="1"/>
                           </Group>
                           <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
@@ -85,8 +84,6 @@
                       <Group type="103" alignment="1" groupAlignment="1" max="-2" attributes="0">
                           <Component id="scrFolder" alignment="0" min="-2" pref="81" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="cmdLoad" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
                               <Component id="cmdRecognize" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="cmdShow" min="-2" max="-2" attributes="0"/>
@@ -105,14 +102,6 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JButton" name="cmdLoad">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Load"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmdLoadActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JCheckBox" name="chkAuto">
           <Properties>
             <Property name="selected" type="boolean" value="true"/>

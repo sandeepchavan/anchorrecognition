@@ -13,7 +13,7 @@ import java.util.Date;
  */
 public class MonitorDownload extends Thread implements Runnable {
 
-    private String url;
+   /* private String url;
     private String username;
     private String password;
     private String hour;
@@ -52,5 +52,5 @@ public class MonitorDownload extends Thread implements Runnable {
                 }
             }
         }
-    }
+    }*/
 }
