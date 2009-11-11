@@ -1,0 +1,1 @@
+jdbc:postgresql://10.10.5.6:5432/production;gbs_douglas_card;gbs_douglas_card@db;nosavedb
