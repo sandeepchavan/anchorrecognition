@@ -14,6 +14,8 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.DefaultListModel;
@@ -38,8 +40,8 @@ public class MainForm extends javax.swing.JFrame {
     private String[] arrcn = null;
     private static MainForm instance = null;
 
-    public static MainForm Instance(){
-        if(instance==null){
+    public static MainForm Instance() {
+        if (instance == null) {
             instance = new MainForm();
         }
         return instance;
@@ -143,7 +145,7 @@ public class MainForm extends javax.swing.JFrame {
         for (int i = 0; i < cbxType.getItemCount(); i++) {
             jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
             ret = getOCRforMatching();
-            if (ret.length() == 17 && ret.startsWith("000")) {
+            if (ret.length() == 26) {
                 txtRecognization.setForeground(Color.BLACK);
                 getContentOCR().append(strpath);
                 getContentOCR().append(";");
@@ -178,39 +180,31 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private String getOCRforMatching() {
-        String str = jaiRecognitionctr.RecognizeICRImage().get(0).replace("\n", "A");
-        char[] carr = str.toCharArray();
-        for (char c : carr) {
-            if (!Character.isLetterOrDigit(c) && c != 'A') {
-                str = str.replace(String.valueOf(c), "");
+        long start = new Date().getTime();
+        ArrayList<String> lstret = jaiRecognitionctr.RecognizeICRImage();
+        long end = new Date().getTime();
+        long duration = end - start;
+        System.out.println("Took: " + duration);
+        StringBuilder sb = new StringBuilder("");
+        for (String tempstr : lstret) {
+            String str = tempstr.replace("\n", "A");
+            char[] carr = str.toCharArray();
+            for (char c : carr) {
+                if (!Character.isLetterOrDigit(c) && c != 'A') {
+                    str = str.replace(String.valueOf(c), "");
+                }
             }
-        }
-        String arr[] = str.split("A");
-        for (String temp : arr) {
-            if (temp.length() >= 17) {
-                str = temp.replace(" ", "");
-                break;
+            String arr[] = str.split("A");
+            for (String temp : arr) {
+                if (temp.length() >= 10 || temp.length() >= 8) {
+                    str = temp.replace(" ", "");
+                    break;
+                }
             }
+            str = str.replace("A", "");
+            sb.append(str);
         }
-        str = str.replace("A", "");
-        return str;
-        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0);
-        System.out.println(str);
-        char[] carr = str.toLowerCase().toCharArray();
-        StringBuffer strBuff = new StringBuffer();
-        for (char c : carr) {
-        if (Character.isDigit(c)) {
-        strBuff.append(c);
-        }
-        }
-        String arr[] = strBuff.toString().split("\n");
-        for (String temp : arr) {
-        if (temp.length() >= 17) {
-        str = temp;
-        break;
-        }
-        }
-        return str;*/
+        return sb.toString();
     }
 
     private void setImage(String filename) {

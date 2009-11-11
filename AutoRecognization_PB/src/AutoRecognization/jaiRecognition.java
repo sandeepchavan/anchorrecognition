@@ -98,8 +98,6 @@ public class jaiRecognition extends DisplayJAI {
     public ArrayList<String> RecognizeICRImage() {
         ocrobj.setSlideX(0);
         ocrobj.setSlideY(0);
-        reclist.clear();
-        reclist.add(newrecanchor);
         if (ocrobj.LoadImageICR(img, reclist)) {
             if (ocrobj.callICREngine()) {
                 ArrayList<String> result = ocrobj.getAllResultRecognition();
@@ -113,21 +111,29 @@ public class jaiRecognition extends DisplayJAI {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (calcomplete) {
-            g.setColor(new Color(255, 0, 0, 128));
-            g.fillRect(newrecanchor.x, newrecanchor.y, newrecanchor.width, newrecanchor.height);
+            for (Rectangle temp : reclist) {
+                g.setColor(new Color(255, 0, 0, 128));
+                g.fillRect(temp.x, temp.y, temp.width, temp.height);
+            }
         }
     }
 
     public void calculate(String type) {
-        String[] strs = type.split(",");
-        int y = 0;
-        int x = 0;
-        y = this.getHeight() - Integer.valueOf(strs[3].trim());
-        x = this.getWidth() - Integer.valueOf(strs[2].trim());
-        newrecanchor.x = x;
-        newrecanchor.y = y;
-        newrecanchor.width = Integer.valueOf(strs[0].trim());
-        newrecanchor.height = Integer.valueOf(strs[1].trim());
+        reclist.clear();
+        String[] coordinates = type.split(";");
+        for (String strtypes : coordinates) {
+            String[] strs = strtypes.split(",");
+            int y = 0;
+            int x = 0;
+            y = this.getHeight() - Integer.valueOf(strs[3].trim());
+            x = this.getWidth() - Integer.valueOf(strs[2].trim());
+            Rectangle temp = new Rectangle();
+            temp.x = x;
+            temp.y = y;
+            temp.width = Integer.valueOf(strs[0].trim());
+            temp.height = Integer.valueOf(strs[1].trim());
+            reclist.add(temp);
+        }
         calcomplete = true;
         repaint();
     }
