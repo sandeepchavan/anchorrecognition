@@ -294,7 +294,7 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtStatus = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -490,6 +490,15 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+
+            public void run() {
+                MultiRunAutomatic.Instance().setVisible(true);
+            }
+        });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
