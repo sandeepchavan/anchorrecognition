@@ -47,8 +47,8 @@ public class DownloadChecking extends Thread implements Runnable {
         return starttime;
     }
 
-    public void releaseDownloadChecking(){
-        instance=null;
+    public void releaseDownloadChecking() {
+        instance = null;
     }
 
     @Override
@@ -68,13 +68,23 @@ public class DownloadChecking extends Thread implements Runnable {
                 Boolean ret2 = DataHandler.Instance(url, username, password).checkNewProducts(d2);
                 if (ret || ret2) {
                     if (ret) {
-                        MultiRunAutomatic.Instance().setListFolderAuto(DataHandler.Instance(url, username, password).getNewProducts(d));
+                        Boolean ret3 = DataHandler.Instance(url, username, password).checkNewProductsTwice(d);
+                        if (ret3) {
+                            MultiRunAutomatic.Instance().setListFolderAuto(DataHandler.Instance(url, username, password).getNewProducts(d));
+                            MultiRunAutomatic.Instance().setStatus("Stop at...: " + new java.util.Date().toString());
+                            setStart(false);
+                        }
                     } else {
-                        MultiRunAutomatic.Instance().setListFolderAuto(DataHandler.Instance(url, username, password).getNewProducts(d2));
+                        Boolean ret3 = DataHandler.Instance(url, username, password).checkNewProductsTwice(d2);
+                        if (ret3) {
+                            MultiRunAutomatic.Instance().setListFolderAuto(DataHandler.Instance(url, username, password).getNewProducts(d2));
+                            MultiRunAutomatic.Instance().setStatus("Stop at...: " + new java.util.Date().toString());
+                            setStart(false);
+                        }
                     }
-                    MultiRunAutomatic.Instance().setStatus("Stop at...: " + new java.util.Date().toString());
-                    setStart(false);
+
                 }
+
             } catch (InterruptedException ex) {
             }
         }
