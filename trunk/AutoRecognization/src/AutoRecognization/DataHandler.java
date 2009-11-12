@@ -126,6 +126,23 @@ public class DataHandler {
         }
     }
 
+     public Boolean checkNewProductsTwice(Date date) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            pstmt = cn.prepareStatement("select filepath from gbs_douglas_card.start " +
+                    "where createdtime::date = ? and antragsnummer<>''");
+            pstmt.setDate(1, date);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return false;
+            }
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     public void closeConnection() {
         try {
             if (!cn.isClosed()) {
