@@ -38,6 +38,22 @@ public class JScriptEditor extends javax.swing.JPanel {
     }
 
     /**
+     * Go to line of code
+     * @param line
+     */
+    public void gotoLine(int line) {
+        linenr.gotoLine(line);
+    }
+
+    /**
+     * Set tab space for source code
+     * @param tab sise, examples: 4 or 8
+     */
+    public void setTabSize(int tab){
+        linenr.setTabs(tab);
+    }
+
+    /**
      * compile source code java script
      * @return SyntaxError Object which contains error lines and error messages
      */

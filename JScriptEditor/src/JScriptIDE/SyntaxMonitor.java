@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
@@ -177,6 +178,25 @@ public class SyntaxMonitor {
                 }
             }
         } catch (BadLocationException ex) {
+            Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    protected void findString(String value, JTextPane txtSource) {
+        Pattern p = null;
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        String source = "";
+        Matcher matcher = null;
+        try {
+            p = Pattern.compile(value);
+            txtSource.selectAll();
+            source = txtSource.getSelectedText();
+            matcher = p.matcher(source);
+            while (matcher.find()) {
+                txtSource.setSelectionStart(matcher.start());
+                txtSource.setSelectionEnd(matcher.end());
+            }
+        } catch (Exception ex) {
             Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
