@@ -10,7 +10,10 @@
  */
 package JavaScriptEditor;
 
+import JScriptIDE.LineClickEvent;
+import JScriptIDE.LineClickListener;
 import JScriptIDE.SyntaxError;
+import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
@@ -20,6 +23,7 @@ import javax.swing.UIManager;
 public class JSEditor extends javax.swing.JFrame {
 
     private static JSEditor instance = null;
+
     public static JSEditor InStance() {
         if (instance == null) {
             instance = new JSEditor();
@@ -35,6 +39,12 @@ public class JSEditor extends javax.swing.JFrame {
         }
         initComponents();
         this.setLocationRelativeTo(null);
+        jseJavaScript.addLineClickListener(new LineClickListener() {
+
+            public void LineClickPerformed(LineClickEvent evt) {
+                System.out.println(evt.getLine_clicking());
+            }
+        });
     }
 
     @SuppressWarnings("unchecked")
