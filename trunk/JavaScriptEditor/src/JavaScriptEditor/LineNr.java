@@ -26,28 +26,17 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
 
-/**
- * A class illustrating running line number count on JTextPane. Nothing
-is painted on the pane itself,
- * but a separate JPanel handles painting the line numbers.<br>
- *
- * @author Daniel Sjöblom<br>
- * Created on Mar 3, 2004<br>
- * Copyright (c) 2004<br>
- * @version 1.0<br>
- */
 public class LineNr extends JPanel {
-    // for this simple experiment, we keep the pane + scrollpane as members.
 
-    JTextPane txtSource;
-    JScrollPane scrollPane;
+    protected JTextPane txtSource;
+    protected JScrollPane scrollPane;
     private int line_error = -1;
 
     public void setLine_error(int line_error) {
         this.line_error = line_error;
     }
 
-    public LineNr() {
+    protected LineNr() {
         super();
         setMinimumSize(new Dimension(30, 30));
         setPreferredSize(new Dimension(30, 30));
@@ -97,7 +86,7 @@ public class LineNr extends JPanel {
             } catch (BadLocationException ex) {
                 Logger.getLogger(LineNr.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }else if (c == '[') {
+        } else if (c == '[') {
             try {
                 txtSource.getDocument().insertString(txtSource.getCaretPosition(), "]", null);
                 txtSource.setCaretPosition(txtSource.getCaretPosition() - 1);
@@ -107,7 +96,7 @@ public class LineNr extends JPanel {
         }
     }
 
-    public void setTabs(JTextPane textPane, int charactersPerTab) {
+    private void setTabs(JTextPane textPane, int charactersPerTab) {
         FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
         int charWidth = fm.charWidth('w');
         int tabWidth = charWidth * charactersPerTab;
