@@ -16,14 +16,6 @@ public class SyntaxError {
 
     private int line_number_error = 0;
     private String message = "";
-    private static SyntaxError instance = null;
-
-    public static SyntaxError Instance() {
-        if (instance == null) {
-            instance = new SyntaxError();
-        }
-        return instance;
-    }
 
     public int getLine_number_error() {
         return line_number_error;
@@ -33,7 +25,7 @@ public class SyntaxError {
         return message;
     }
 
-    private SyntaxError() {
+    public SyntaxError() {
     }
 
     public void compileCode(String source) {

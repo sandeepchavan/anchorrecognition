@@ -10,7 +10,6 @@
  */
 package JavaScriptEditor;
 
-import java.awt.BorderLayout;
 import javax.swing.UIManager;
 
 /**
@@ -20,8 +19,6 @@ import javax.swing.UIManager;
 public class JSEditor extends javax.swing.JFrame {
 
     private static JSEditor instance = null;
-    public LineNr nr = new LineNr();
-
     public static JSEditor InStance() {
         if (instance == null) {
             instance = new JSEditor();
@@ -36,9 +33,6 @@ public class JSEditor extends javax.swing.JFrame {
         } catch (Exception ex) {
         }
         initComponents();
-        pnlSource.add(nr, BorderLayout.WEST);
-        pnlSource.add(nr.scrollPane, BorderLayout.CENTER);
-
         this.setLocationRelativeTo(null);
     }
 
@@ -49,10 +43,10 @@ public class JSEditor extends javax.swing.JFrame {
         pnlMain = new javax.swing.JPanel();
         pnlControl = new javax.swing.JPanel();
         cmdCompile = new javax.swing.JButton();
-        pnlSource = new javax.swing.JPanel();
         pnlError = new javax.swing.JPanel();
         scrError = new javax.swing.JScrollPane();
         txtError = new javax.swing.JTextArea();
+        jseJavaScript = new JavaScriptEditor.JScriptEditor();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JS Editor");
@@ -83,9 +77,6 @@ public class JSEditor extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        pnlSource.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        pnlSource.setLayout(new java.awt.BorderLayout());
-
         pnlError.setBorder(javax.swing.BorderFactory.createTitledBorder("Error"));
 
         txtError.setColumns(20);
@@ -112,9 +103,9 @@ public class JSEditor extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(pnlSource, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+                    .addComponent(pnlError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnlControl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jseJavaScript, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
@@ -123,7 +114,7 @@ public class JSEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlSource, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
+                .addComponent(jseJavaScript, javax.swing.GroupLayout.PREFERRED_SIZE, 507, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -144,11 +135,8 @@ public class JSEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdCompileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCompileActionPerformed
-        nr.txtSource.selectAll();
-        SyntaxError.Instance().compileCode(nr.txtSource.getSelectedText());
-        txtError.setText(SyntaxError.Instance().getMessage());
-        nr.setLine_error(SyntaxError.Instance().getLine_number_error());
-        nr.repaint();
+        SyntaxError se = jseJavaScript.compileSource();
+        txtError.setText(se.getMessage());
     }//GEN-LAST:event_cmdCompileActionPerformed
 
     /**
@@ -164,10 +152,10 @@ public class JSEditor extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCompile;
+    private JavaScriptEditor.JScriptEditor jseJavaScript;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlError;
     private javax.swing.JPanel pnlMain;
-    private javax.swing.JPanel pnlSource;
     private javax.swing.JScrollPane scrError;
     private javax.swing.JTextArea txtError;
     // End of variables declaration//GEN-END:variables
