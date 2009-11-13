@@ -163,7 +163,7 @@ public class LineNr extends JPanel {
             } else {
                 g.setColor(Color.black);
             }
-            g.drawString(Integer.toString(line), 15, y);
+            g.drawString(Integer.toString(line), 0, y);
         }
 
     }
