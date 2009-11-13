@@ -10,10 +10,7 @@
  */
 package JavaScriptEditor;
 
-import JScriptIDE.LineClickEvent;
-import JScriptIDE.LineClickListener;
 import JScriptIDE.SyntaxError;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
 /**
