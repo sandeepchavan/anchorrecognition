@@ -42,7 +42,7 @@ public class SyntaxMonitor {
             "\\bJToolTip\\W|\\bJTree\\W|\\bJViewport\\W|\\bJWindow\\W\\b";
     private static SyntaxMonitor instance = null;
 
-    public static SyntaxMonitor Instance() {
+    protected static SyntaxMonitor Instance() {
         if (instance == null) {
             instance = new SyntaxMonitor();
         }
@@ -52,7 +52,7 @@ public class SyntaxMonitor {
     private SyntaxMonitor() {
     }
 
-    public void matchAll(DefaultStyledDocument dsd) {
+    protected void matchAll(DefaultStyledDocument dsd) {
         matchWord(dsd);
         matchKeyWord(dsd);
         matchJavaSwing(dsd);
