@@ -19,10 +19,13 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
 
@@ -31,6 +34,11 @@ public class LineNr extends JPanel {
     protected JTextPane txtSource;
     protected JScrollPane scrollPane;
     private int line_error = -1;
+    private int current_line = 0;
+
+    public int getCurrent_line() {
+        return current_line;
+    }
 
     protected void setLine_error(int line_error) {
         this.line_error = line_error;
@@ -60,6 +68,15 @@ public class LineNr extends JPanel {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 SyntaxMonitor.Instance().matchAll((DefaultStyledDocument) txtSource.getDocument());
                 insertParenthesis(evt.getKeyChar());
+            }
+        });
+
+        txtSource.addCaretListener(new CaretListener() {
+
+            public void caretUpdate(CaretEvent e) {
+                int position = txtSource.getCaretPosition();
+                StyledDocument stDoc = (StyledDocument) txtSource.getDocument();
+                current_line = stDoc.getRootElements()[0].getElementIndex(position) + 1;
             }
         });
     }
@@ -146,7 +163,7 @@ public class LineNr extends JPanel {
             } else {
                 g.setColor(Color.black);
             }
-            g.drawString(Integer.toString(line), 0, y);
+            g.drawString(Integer.toString(line), 15, y);
         }
 
     }
