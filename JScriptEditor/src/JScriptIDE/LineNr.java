@@ -28,6 +28,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.TabSet;
 import javax.swing.text.TabStop;
+import javax.swing.text.View;
 
 public class LineNr extends JPanel {
 
@@ -130,6 +131,23 @@ public class LineNr extends JPanel {
         StyleConstants.setTabSet(attributes, tabSet);
         int length = textPane.getDocument().getLength();
         textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, true);
+    }
+
+    public void gotoLine(int n) {
+        View v = txtSource.getUI().getRootView(txtSource);
+        View section = v.getView(0);
+        int ln = n-2;
+        for (int i = 0; i < section.getViewCount(); i++) {
+            View par = section.getView(i);
+            if (par.getViewCount() <= ln) {
+                ln -= par.getViewCount();
+            }
+            else {
+                txtSource.setCaretPosition(par.getView(ln).getStartOffset());
+                return;
+            }
+        }
+
     }
 
     @Override

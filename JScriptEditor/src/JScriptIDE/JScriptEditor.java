@@ -45,6 +45,9 @@ public class JScriptEditor extends javax.swing.JPanel {
         syne.compileCode(getSource());
         linenr.setLine_error(syne.getLine_number_error());
         linenr.repaint();
+        if (syne.getLine_number_error() > 0) {
+            linenr.gotoLine(syne.getLine_number_error());
+        }
         return syne;
     }
 
