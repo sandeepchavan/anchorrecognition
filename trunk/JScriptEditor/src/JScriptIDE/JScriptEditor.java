@@ -48,6 +48,14 @@ public class JScriptEditor extends javax.swing.JPanel {
         return syne;
     }
 
+    public void addLineClickListener(LineClickListener listener) {
+        linenr.listenersList.add(LineClickListener.class, listener);
+    }
+
+    public void removeLineClickListener(LineClickListener listener) {
+        linenr.listenersList.remove(LineClickListener.class, listener);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
