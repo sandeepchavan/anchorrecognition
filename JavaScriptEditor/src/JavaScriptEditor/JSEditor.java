@@ -10,6 +10,7 @@
  */
 package JavaScriptEditor;
 
+import JScriptIDE.SyntaxError;
 import javax.swing.UIManager;
 
 /**
@@ -46,6 +47,8 @@ public class JSEditor extends javax.swing.JFrame {
         pnlError = new javax.swing.JPanel();
         scrError = new javax.swing.JScrollPane();
         txtError = new javax.swing.JTextArea();
+        tabMain = new javax.swing.JTabbedPane();
+        jseJavaScript = new JScriptIDE.JScriptEditor();
         jScriptEditor1 = new JScriptIDE.JScriptEditor();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,6 +103,9 @@ public class JSEditor extends javax.swing.JFrame {
                 .addComponent(scrError, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
         );
 
+        tabMain.addTab("tab1", jseJavaScript);
+        tabMain.addTab("tab2", jScriptEditor1);
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
@@ -107,9 +113,9 @@ public class JSEditor extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(tabMain, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
                     .addComponent(pnlError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlControl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScriptEditor1, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE))
+                    .addComponent(pnlControl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
@@ -118,7 +124,7 @@ public class JSEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScriptEditor1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(tabMain, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -139,8 +145,8 @@ public class JSEditor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdCompileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCompileActionPerformed
-        /*SyntaxError se = jseJavaScript.compileSource();
-        txtError.setText(se.getMessage());*/
+        SyntaxError se = jseJavaScript.compileSource();
+        txtError.setText(se.getMessage());
     }//GEN-LAST:event_cmdCompileActionPerformed
 
     /**
@@ -157,10 +163,12 @@ public class JSEditor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCompile;
     private JScriptIDE.JScriptEditor jScriptEditor1;
+    private JScriptIDE.JScriptEditor jseJavaScript;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlError;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JScrollPane scrError;
+    private javax.swing.JTabbedPane tabMain;
     private javax.swing.JTextArea txtError;
     // End of variables declaration//GEN-END:variables
 }
