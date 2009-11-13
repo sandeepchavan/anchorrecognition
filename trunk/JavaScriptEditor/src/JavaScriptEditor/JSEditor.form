@@ -43,22 +43,22 @@
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="pnlError" alignment="0" max="32767" attributes="0"/>
                       <Component id="pnlControl" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jseJavaScript" alignment="0" pref="915" max="32767" attributes="0"/>
+                      <Component id="jScriptEditor1" alignment="1" pref="940" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="pnlControl" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jseJavaScript" min="-2" pref="507" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
+                  <Component id="jScriptEditor1" pref="349" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
                   <Component id="pnlError" min="-2" max="-2" attributes="2"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -79,7 +79,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cmdCompile" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="832" max="32767" attributes="0"/>
+                      <EmptySpace pref="857" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -116,12 +116,18 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrError" alignment="0" pref="899" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="scrError" pref="914" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrError" alignment="1" pref="137" max="32767" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="scrError" pref="137" max="32767" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -145,7 +151,7 @@
             </Container>
           </SubComponents>
         </Container>
-        <Component class="JavaScriptEditor.JScriptEditor" name="jseJavaScript">
+        <Component class="JScriptIDE.JScriptEditor" name="jScriptEditor1">
         </Component>
       </SubComponents>
     </Container>
