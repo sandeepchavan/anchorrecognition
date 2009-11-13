@@ -114,6 +114,10 @@ public class LineNr extends JPanel {
         }
     }
 
+    /**
+     * Set tab size
+     * @param charactersPerTab tab size
+     */
     protected void setTabs(int charactersPerTab) {
         FontMetrics fm = txtSource.getFontMetrics(txtSource.getFont());
         int charWidth = fm.charWidth('w');
@@ -133,10 +137,14 @@ public class LineNr extends JPanel {
         txtSource.getStyledDocument().setParagraphAttributes(0, length, attributes, true);
     }
 
-    protected void gotoLine(int n) {
+    /**
+     * Go to line
+     * @param line
+     */
+    protected void gotoLine(int line) {
         View v = txtSource.getUI().getRootView(txtSource);
         View section = v.getView(0);
-        int ln = n-2;
+        int ln = line;
         for (int i = 0; i < section.getViewCount(); i++) {
             View par = section.getView(i);
             if (par.getViewCount() <= ln) {
@@ -185,11 +193,11 @@ public class LineNr extends JPanel {
         }
     }
 
-    public void addLineClickListener(LineClickListener listener) {
+    protected void addLineClickListener(LineClickListener listener) {
         listenersList.add(LineClickListener.class, listener);
     }
 
-    public void removeLineClickListener(LineClickListener listener) {
+    protected void removeLineClickListener(LineClickListener listener) {
         listenersList.remove(LineClickListener.class, listener);
     }
 
