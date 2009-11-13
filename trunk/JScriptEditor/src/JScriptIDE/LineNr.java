@@ -32,7 +32,7 @@ public class LineNr extends JPanel {
     protected JScrollPane scrollPane;
     private int line_error = -1;
 
-    public void setLine_error(int line_error) {
+    protected void setLine_error(int line_error) {
         this.line_error = line_error;
     }
 

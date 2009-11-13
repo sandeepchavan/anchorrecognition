@@ -17,10 +17,18 @@ public class SyntaxError {
     private int line_number_error = 0;
     private String message = "";
 
+    /**
+     * get error line number
+     * @return error line number
+     */
     public int getLine_number_error() {
         return line_number_error;
     }
 
+    /**
+     * get error message
+     * @return string error message
+     */
     public String getMessage() {
         return message;
     }
@@ -28,7 +36,7 @@ public class SyntaxError {
     protected SyntaxError() {
     }
 
-    public void compileCode(String source) {
+    protected void compileCode(String source) {
         ScriptEngineManager mgr = new ScriptEngineManager();
         ScriptEngine engine = mgr.getEngineByName("JavaScript");
         try {

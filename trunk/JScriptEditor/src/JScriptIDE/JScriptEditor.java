@@ -28,11 +28,19 @@ public class JScriptEditor extends javax.swing.JPanel {
         pnlSource.add(linenr.scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Get source code java script
+     * @return Source code
+     */
     public String getSource() {
         linenr.txtSource.selectAll();
         return linenr.txtSource.getSelectedText();
     }
 
+    /**
+     * compile source code java script
+     * @return SyntaxError Object which contains error lines and error messages
+     */
     public SyntaxError compileSource() {
         syne.compileCode(getSource());
         linenr.setLine_error(syne.getLine_number_error());
