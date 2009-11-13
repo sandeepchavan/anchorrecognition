@@ -34,11 +34,8 @@ public class LineNr extends JPanel {
     protected JTextPane txtSource;
     protected JScrollPane scrollPane;
     private int line_error = -1;
-    private int current_line = 0;
-
-    public int getCurrent_line() {
-        return current_line;
-    }
+    protected javax.swing.event.EventListenerList listenersList =
+            new javax.swing.event.EventListenerList();
 
     protected void setLine_error(int line_error) {
         this.line_error = line_error;
@@ -76,7 +73,10 @@ public class LineNr extends JPanel {
             public void caretUpdate(CaretEvent e) {
                 int position = txtSource.getCaretPosition();
                 StyledDocument stDoc = (StyledDocument) txtSource.getDocument();
-                current_line = stDoc.getRootElements()[0].getElementIndex(position) + 1;
+                int current_line = stDoc.getRootElements()[0].getElementIndex(position) + 2;
+                LineClickEvent lce = new LineClickEvent(txtSource);
+                lce.setLine_clicking(current_line);
+                fireLineClickEvent(lce);
             }
         });
     }
@@ -165,6 +165,22 @@ public class LineNr extends JPanel {
             }
             g.drawString(Integer.toString(line), 0, y);
         }
+    }
 
+    public void addLineClickListener(LineClickListener listener) {
+        listenersList.add(LineClickListener.class, listener);
+    }
+
+    public void removeLineClickListener(LineClickListener listener) {
+        listenersList.remove(LineClickListener.class, listener);
+    }
+
+    void fireLineClickEvent(LineClickEvent evt) {
+        Object[] listeners = listenersList.getListenerList();
+        for (int i = 0; i < listeners.length; i += 2) {
+            if (listeners[i] == LineClickListener.class) {
+                ((LineClickListener) listeners[i + 1]).LineClickPerformed(evt);
+            }
+        }
     }
 }
