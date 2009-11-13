@@ -56,7 +56,7 @@ public class LineNr extends JPanel {
                 LineNr.this.repaint();
             }
         };
-        setTabs(txtSource, 4);
+        setTabs(4);
         txtSource.setFont(new Font("Monospaced", Font.PLAIN, 11));
 
         scrollPane = new JScrollPane(txtSource);
@@ -114,8 +114,8 @@ public class LineNr extends JPanel {
         }
     }
 
-    private void setTabs(JTextPane textPane, int charactersPerTab) {
-        FontMetrics fm = textPane.getFontMetrics(textPane.getFont());
+    protected void setTabs(int charactersPerTab) {
+        FontMetrics fm = txtSource.getFontMetrics(txtSource.getFont());
         int charWidth = fm.charWidth('w');
         int tabWidth = charWidth * charactersPerTab;
 
@@ -129,11 +129,11 @@ public class LineNr extends JPanel {
         TabSet tabSet = new TabSet(tabs);
         SimpleAttributeSet attributes = new SimpleAttributeSet();
         StyleConstants.setTabSet(attributes, tabSet);
-        int length = textPane.getDocument().getLength();
-        textPane.getStyledDocument().setParagraphAttributes(0, length, attributes, true);
+        int length = txtSource.getDocument().getLength();
+        txtSource.getStyledDocument().setParagraphAttributes(0, length, attributes, true);
     }
 
-    public void gotoLine(int n) {
+    protected void gotoLine(int n) {
         View v = txtSource.getUI().getRootView(txtSource);
         View section = v.getView(0);
         int ln = n-2;

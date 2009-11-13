@@ -14,11 +14,15 @@ public class LineClickEvent extends EventObject {
 
     private int line_clicking = 0;
 
+    /**
+     * Get line where user click on Source code
+     * @return line
+     */
     public int getLine_clicking() {
         return line_clicking;
     }
 
-    public void setLine_clicking(int line_clicking) {
+    protected void setLine_clicking(int line_clicking) {
         this.line_clicking = line_clicking;
     }
 
