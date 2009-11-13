@@ -1,0 +1,53 @@
+Pattern regex = Pattern.compile("\\babstract|continue|for|new|switch|assert|default|goto|package|synchronized|boolean|do|if|private|this|break|double|implements|protected|throw[^s]|byte|else|import|public|throws|case|enum|instanceof|return|transient|catch|extends|int|short|try|char|final|interface|static|void|class|finally|ong|strictfp|volatile|const|float|native|super|while|var");
+
+public void mactchKeyWord(DefaultStyledDocument dsd) {
+        Pattern p = null;
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        String source = "";
+        Matcher matcher = null;
+        for (Keyword key : Keyword.values()) {
+            try {
+                p = Pattern.compile(key.toString(), Pattern.CASE_INSENSITIVE);
+                source = dsd.getText(0, dsd.getLength());
+                matcher = p.matcher(source);
+                while (matcher.find()) {
+                    switch (key) {
+                        case JButton:
+                        case JFrame:
+                        case JOptionPane:
+                        case New:
+                        case String:
+                        case Int:
+                        case Double:
+                        case print:
+                        case println:
+                            attr.addAttribute(StyleConstants.Bold, new Boolean(true));
+                            StyleConstants.setForeground(attr, Color.ORANGE);
+                            dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
+                            break;
+                        case showConfirmDialog:
+                        case showMessageDialog:
+                            attr.addAttribute(StyleConstants.Bold, new Boolean(true));
+                            StyleConstants.setForeground(attr, Color.darkGray);
+                            dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
+                            break;
+                        case document:
+                        case function:
+                        case System:
+                            attr.addAttribute(StyleConstants.Bold, new Boolean(true));
+                            StyleConstants.setForeground(attr, Color.BLUE);
+                            dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
+                            break;
+                        case var:
+                            attr.addAttribute(StyleConstants.Bold, new Boolean(true));
+                            StyleConstants.setForeground(attr, Color.RED);
+                            dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
+                            break;
+                    }
+                }
+            } catch (BadLocationException ex) {
+                Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        matchingVariable(dsd);
+    }
