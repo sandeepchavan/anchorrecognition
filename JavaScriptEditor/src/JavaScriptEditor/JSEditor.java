@@ -39,12 +39,6 @@ public class JSEditor extends javax.swing.JFrame {
         }
         initComponents();
         this.setLocationRelativeTo(null);
-        jseJavaScript.addLineClickListener(new LineClickListener() {
-
-            public void LineClickPerformed(LineClickEvent evt) {
-                System.out.println(evt.getLine_clicking());
-            }
-        });
     }
 
     @SuppressWarnings("unchecked")
@@ -113,6 +107,11 @@ public class JSEditor extends javax.swing.JFrame {
                 .addComponent(scrError, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
         );
 
+        jseJavaScript.addLineClickListener(new JScriptIDE.LineClickListener() {
+            public void LineClickPerformed(JScriptIDE.LineClickEvent evt) {
+                jseJavaScriptLineClickPerformed(evt);
+            }
+        });
         tabMain.addTab("tab1", jseJavaScript);
         tabMain.addTab("tab2", jScriptEditor1);
 
@@ -158,6 +157,10 @@ public class JSEditor extends javax.swing.JFrame {
         SyntaxError se = jseJavaScript.compileSource();
         txtError.setText(se.getMessage());
     }//GEN-LAST:event_cmdCompileActionPerformed
+
+    private void jseJavaScriptLineClickPerformed(JScriptIDE.LineClickEvent evt) {//GEN-FIRST:event_jseJavaScriptLineClickPerformed
+        System.out.println(evt.getLine_clicking());
+    }//GEN-LAST:event_jseJavaScriptLineClickPerformed
 
     /**
      * @param args the command line arguments
