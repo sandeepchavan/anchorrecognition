@@ -31,7 +31,7 @@ public class SyntaxMonitor {
     private static final String parenthesis = "\\(|\\)|\\[|\\]|\\{|\\}";
     private static final String words = "\\b\\w+|\\W+";
     private static final String variable = "\\s*?var\\s+\\w+";
-    private static final String astring = "\"\\s*?\\w*?\\s*?\"";
+    private static final String astring = "\"[\\s*?\\w*?\\s*?]+\"";
     private static final String java_swing = "\\b\\bJApplet\\W|\\bJButton\\W|\\bJCheckBox\\W|\\bJCheckBoxMenuItem\\W|" +
             "\\bJColorChooser\\W|\\bJComboBox\\W|\\bJComponent\\W|\\bJDesktopPane\\W|\\bJDialog\\W|\\bJEditorPane\\W|" +
             "\\bJFileChooser\\W|\\bJFormattedTextField\\W|\\bJFrame\\W|\\bJInternalFrame\\W|\\bJInternalFrame\\W|" +
