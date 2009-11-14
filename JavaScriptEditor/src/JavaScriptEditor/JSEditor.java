@@ -51,6 +51,9 @@ public class JSEditor extends javax.swing.JFrame {
         tabMain = new javax.swing.JTabbedPane();
         jseJavaScript = new JScriptIDE.JScriptEditor();
         jScriptEditor1 = new JScriptIDE.JScriptEditor();
+        tbMain = new javax.swing.JToolBar();
+        lblLineCaption = new javax.swing.JLabel();
+        lblLine = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("JS Editor");
@@ -93,15 +96,13 @@ public class JSEditor extends javax.swing.JFrame {
         pnlError.setLayout(pnlErrorLayout);
         pnlErrorLayout.setHorizontalGroup(
             pnlErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlErrorLayout.createSequentialGroup()
+            .addGroup(pnlErrorLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(scrError, javax.swing.GroupLayout.DEFAULT_SIZE, 914, Short.MAX_VALUE))
         );
         pnlErrorLayout.setVerticalGroup(
             pnlErrorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlErrorLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(scrError, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE))
+            .addComponent(scrError, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
         );
 
         jseJavaScript.addLineClickListener(new JScriptIDE.LineClickListener() {
@@ -112,16 +113,25 @@ public class JSEditor extends javax.swing.JFrame {
         tabMain.addTab("tab1", jseJavaScript);
         tabMain.addTab("tab2", jScriptEditor1);
 
+        tbMain.setRollover(true);
+
+        lblLineCaption.setText("Line: ");
+        tbMain.add(lblLineCaption);
+
+        lblLine.setText("0");
+        tbMain.add(lblLine);
+
         javax.swing.GroupLayout pnlMainLayout = new javax.swing.GroupLayout(pnlMain);
         pnlMain.setLayout(pnlMainLayout);
         pnlMainLayout.setHorizontalGroup(
             pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMainLayout.createSequentialGroup()
+            .addGroup(pnlMainLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(tabMain, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
-                    .addComponent(pnlError, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnlControl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnlError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tabMain, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE)
+                    .addComponent(pnlControl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(tbMain, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 940, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
@@ -130,10 +140,12 @@ public class JSEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(pnlControl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tabMain, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(tabMain, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlError, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(tbMain, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -156,7 +168,7 @@ public class JSEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_cmdCompileActionPerformed
 
     private void jseJavaScriptLineClickPerformed(JScriptIDE.LineClickEvent evt) {//GEN-FIRST:event_jseJavaScriptLineClickPerformed
-        System.out.println(evt.getLine_clicking());
+        lblLine.setText(String.valueOf(evt.getLine_clicking()));
     }//GEN-LAST:event_jseJavaScriptLineClickPerformed
 
     /**
@@ -174,11 +186,14 @@ public class JSEditor extends javax.swing.JFrame {
     private javax.swing.JButton cmdCompile;
     private JScriptIDE.JScriptEditor jScriptEditor1;
     private JScriptIDE.JScriptEditor jseJavaScript;
+    private javax.swing.JLabel lblLine;
+    private javax.swing.JLabel lblLineCaption;
     private javax.swing.JPanel pnlControl;
     private javax.swing.JPanel pnlError;
     private javax.swing.JPanel pnlMain;
     private javax.swing.JScrollPane scrError;
     private javax.swing.JTabbedPane tabMain;
+    private javax.swing.JToolBar tbMain;
     private javax.swing.JTextArea txtError;
     // End of variables declaration//GEN-END:variables
 }
