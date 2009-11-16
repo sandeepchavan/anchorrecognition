@@ -90,6 +90,16 @@ public class JScriptEditor extends javax.swing.JPanel {
         }
     }
 
+    /**
+     * Search String in Source code
+     * @param value whi
+     * @param isCaseInsensitive
+     */
+    public void findString(String value, Boolean isCaseInsensitive) {
+        linenr.txtSource.requestFocus();
+        SyntaxMonitor.Instance().findString(value, linenr.txtSource, isCaseInsensitive);
+    }
+
     public void addLineClickListener(LineClickListener listener) {
         linenr.listenersList.add(LineClickListener.class, listener);
     }

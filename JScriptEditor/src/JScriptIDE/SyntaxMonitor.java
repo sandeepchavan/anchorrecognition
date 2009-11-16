@@ -41,6 +41,7 @@ public class SyntaxMonitor {
             "\\bJRootPane\\W|\\bJScrollBar\\W|\\bJScrollPane\\W|\\bJSeparator\\W|\\bJSlider\\W|\\bJSpinner\\W|\\bJSplitPane\\W|" +
             "\\bJTabbedPane\\W|\\bJTable\\W|\\bJTextArea\\W|\\bJTextField\\W|\\bJTextPane\\W|\\bJToggleButton\\W|\\bJToolBar\\W|" +
             "\\bJToolTip\\W|\\bJTree\\W|\\bJViewport\\W|\\bJWindow\\W\\b";
+    private static final String comments = "//+[\\w+\\s*?]+";
     private static SyntaxMonitor instance = null;
 
     protected static SyntaxMonitor Instance() {
@@ -55,10 +56,11 @@ public class SyntaxMonitor {
 
     protected void matchAll(DefaultStyledDocument dsd) {
         matchWord(dsd);
-        matchKeyWord(dsd);
+        matchComment(dsd);
         matchJavaSwing(dsd);
         matchParenthesis(dsd);
         matchString(dsd);
+        matchKeyWord(dsd);
     }
 
     private void matchKeyWord(DefaultStyledDocument dsd) {
@@ -92,6 +94,25 @@ public class SyntaxMonitor {
             while (matcher.find()) {
                 attr.addAttribute(StyleConstants.Bold, new Boolean(true));
                 StyleConstants.setForeground(attr, new java.awt.Color(0xC0, 0xC0, 0x00));
+                dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
+            }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void matchComment(DefaultStyledDocument dsd) {
+        Pattern p = null;
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        String source = "";
+        Matcher matcher = null;
+        try {
+            p = Pattern.compile(comments);
+            source = dsd.getText(0, dsd.getLength());
+            matcher = p.matcher(source);
+            while (matcher.find()) {
+                attr.addAttribute(StyleConstants.Bold, new Boolean(false));
+                StyleConstants.setForeground(attr, Color.lightGray);
                 dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
             }
         } catch (BadLocationException ex) {
@@ -182,13 +203,17 @@ public class SyntaxMonitor {
         }
     }
 
-    protected void findString(String value, JTextPane txtSource) {
+    protected void findString(String value, JTextPane txtSource, Boolean isCaseInsensitive) {
         Pattern p = null;
         SimpleAttributeSet attr = new SimpleAttributeSet();
         String source = "";
         Matcher matcher = null;
         try {
-            p = Pattern.compile(value);
+            if (isCaseInsensitive) {
+                p = Pattern.compile(value, Pattern.CASE_INSENSITIVE);
+            } else {
+                p = Pattern.compile(value);
+            }
             txtSource.selectAll();
             source = txtSource.getSelectedText();
             matcher = p.matcher(source);
