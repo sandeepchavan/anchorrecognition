@@ -74,7 +74,7 @@ public class LineNr extends JPanel {
             public void caretUpdate(CaretEvent e) {
                 int position = txtSource.getCaretPosition();
                 StyledDocument stDoc = (StyledDocument) txtSource.getDocument();
-                int current_line = stDoc.getRootElements()[0].getElementIndex(position) + 2;
+                int current_line = stDoc.getRootElements()[0].getElementIndex(position) + 1;
                 LineClickEvent lce = new LineClickEvent(txtSource);
                 lce.setLine_clicking(current_line);
                 fireLineClickEvent(lce);
@@ -149,8 +149,7 @@ public class LineNr extends JPanel {
             View par = section.getView(i);
             if (par.getViewCount() <= ln) {
                 ln -= par.getViewCount();
-            }
-            else {
+            } else {
                 txtSource.setCaretPosition(par.getView(ln).getStartOffset());
                 return;
             }
