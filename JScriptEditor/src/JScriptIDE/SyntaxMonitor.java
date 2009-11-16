@@ -43,6 +43,9 @@ public class SyntaxMonitor {
             "\\bJToolTip\\W|\\bJTree\\W|\\bJViewport\\W|\\bJWindow\\W\\b";
     private static final String comments = "//+[\\w+\\s*?\\p{L}*?()`~!@#$%\\^&*\\[\\]\"';:<>?/\\\\,.-]+\\b";
     private static SyntaxMonitor instance = null;
+    private int startindex = 0;
+    private String valueSearch = "";
+    private Boolean isCaseInsensitive = true;
 
     protected static SyntaxMonitor Instance() {
         if (instance == null) {
@@ -203,10 +206,12 @@ public class SyntaxMonitor {
         }
     }
 
-    protected void findString(String value, JTextPane txtSource, Boolean isCaseInsensitive) {
+    protected void findString(String value, JTextPane txtSource, Boolean isCaseInsensitive, int startindex) {
         Pattern p = null;
         String source = "";
         Matcher matcher = null;
+        this.valueSearch = value;
+        this.isCaseInsensitive = isCaseInsensitive;
         try {
             if (isCaseInsensitive) {
                 p = Pattern.compile(value, Pattern.CASE_INSENSITIVE);
@@ -216,12 +221,17 @@ public class SyntaxMonitor {
             txtSource.selectAll();
             source = txtSource.getSelectedText();
             matcher = p.matcher(source);
-            while (matcher.find()) {
-                txtSource.setSelectionStart(matcher.start());
-                txtSource.setSelectionEnd(matcher.end());
-            }
+            matcher.find(startindex);
+            this.startindex = matcher.end();
+            txtSource.setSelectionStart(matcher.start());
+            txtSource.setSelectionEnd(matcher.end());
+
         } catch (Exception ex) {
             Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    protected void findNext(JTextPane txtSource) {
+        findString(valueSearch, txtSource, this.isCaseInsensitive, startindex);
     }
 }
