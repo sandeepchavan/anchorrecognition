@@ -172,8 +172,8 @@ public class LineNr extends JPanel {
         int startline = doc.getDefaultRootElement().getElementIndex(start) + 1;
         int endline = doc.getDefaultRootElement().getElementIndex(end) + 1;
 
-        int fontHeight = g.getFontMetrics(txtSource.getFont()).getHeight();
-        int fontDesc = g.getFontMetrics(txtSource.getFont()).getDescent();
+        int fontHeight = 16;
+        int fontDesc = 4;
         int starting_y = -1;
 
         try {
@@ -181,14 +181,13 @@ public class LineNr extends JPanel {
         } catch (BadLocationException e1) {
             e1.printStackTrace();
         }
-
         for (int line = startline, y = starting_y; line <= endline; y += fontHeight, line++) {
             if (line_error > 0 && line_error == line) {
                 g.setColor(Color.red);
             } else {
                 g.setColor(Color.black);
             }
-            g.drawString(Integer.toString(line), 0, y);
+            g.drawString(Integer.toString(line), 0, y + line);
         }
     }
 
