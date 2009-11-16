@@ -68,8 +68,9 @@ public class JScriptEditor extends javax.swing.JPanel {
         linenr.repaint();
         if (syne.getLine_number_error() > 0) {
             linenr.gotoLine(syne.getLine_number_error());
+            return syne;
         }
-        return syne;
+        return null;
     }
 
     /**
