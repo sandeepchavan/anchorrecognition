@@ -11,6 +11,11 @@
 package JScriptIDE;
 
 import java.awt.BorderLayout;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 /**
  *
@@ -49,7 +54,7 @@ public class JScriptEditor extends javax.swing.JPanel {
      * Set tab space for source code
      * @param tab sise, examples: 4 or 8
      */
-    public void setTabSize(int tab){
+    public void setTabSize(int tab) {
         linenr.setTabs(tab);
     }
 
@@ -65,6 +70,24 @@ public class JScriptEditor extends javax.swing.JPanel {
             linenr.gotoLine(syne.getLine_number_error());
         }
         return syne;
+    }
+
+    /**
+     * Save source code into disk
+     * @param path - destination of source code where you wan to store source code.
+     */
+    public void saveSource(String path) {
+        try {
+            Writer output = null;
+            File file = new File(path);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(getSource());
+            output.close();
+        } catch (IOException ex) {
+        }
     }
 
     public void addLineClickListener(LineClickListener listener) {
