@@ -41,7 +41,7 @@ public class SyntaxMonitor {
             "\\bJRootPane\\W|\\bJScrollBar\\W|\\bJScrollPane\\W|\\bJSeparator\\W|\\bJSlider\\W|\\bJSpinner\\W|\\bJSplitPane\\W|" +
             "\\bJTabbedPane\\W|\\bJTable\\W|\\bJTextArea\\W|\\bJTextField\\W|\\bJTextPane\\W|\\bJToggleButton\\W|\\bJToolBar\\W|" +
             "\\bJToolTip\\W|\\bJTree\\W|\\bJViewport\\W|\\bJWindow\\W\\b";
-    private static final String comments = "//+[\\w+\\s*?]+";
+    private static final String comments = "//+[\\w+\\s*?\\p{L}*?()`~!@#$%\\^&*\\[\\]\"';:<>?/\\\\,.-]+\\b";
     private static SyntaxMonitor instance = null;
 
     protected static SyntaxMonitor Instance() {
@@ -56,11 +56,11 @@ public class SyntaxMonitor {
 
     protected void matchAll(DefaultStyledDocument dsd) {
         matchWord(dsd);
-        matchComment(dsd);
         matchJavaSwing(dsd);
         matchParenthesis(dsd);
         matchString(dsd);
         matchKeyWord(dsd);
+        matchComment(dsd);
     }
 
     private void matchKeyWord(DefaultStyledDocument dsd) {
