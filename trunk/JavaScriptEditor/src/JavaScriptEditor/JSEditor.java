@@ -46,6 +46,8 @@ public class JSEditor extends javax.swing.JFrame {
         pnlControl = new javax.swing.JPanel();
         cmdCompile = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        cmdFind = new javax.swing.JButton();
+        txtSearch = new javax.swing.JTextField();
         pnlError = new javax.swing.JPanel();
         scrError = new javax.swing.JScrollPane();
         txtError = new javax.swing.JTextArea();
@@ -75,6 +77,13 @@ public class JSEditor extends javax.swing.JFrame {
             }
         });
 
+        cmdFind.setText("Find");
+        cmdFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdFindActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlControlLayout = new javax.swing.GroupLayout(pnlControl);
         pnlControl.setLayout(pnlControlLayout);
         pnlControlLayout.setHorizontalGroup(
@@ -84,7 +93,11 @@ public class JSEditor extends javax.swing.JFrame {
                 .addComponent(cmdCompile)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addContainerGap(794, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdFind)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(457, Short.MAX_VALUE))
         );
         pnlControlLayout.setVerticalGroup(
             pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,7 +105,9 @@ public class JSEditor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdCompile)
-                    .addComponent(jButton1))
+                    .addComponent(jButton1)
+                    .addComponent(cmdFind)
+                    .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -187,6 +202,10 @@ public class JSEditor extends javax.swing.JFrame {
         jseJavaScript.saveSource("source.js");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void cmdFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdFindActionPerformed
+        jseJavaScript.findString(txtSearch.getText(), true);
+    }//GEN-LAST:event_cmdFindActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -200,6 +219,7 @@ public class JSEditor extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCompile;
+    private javax.swing.JButton cmdFind;
     private javax.swing.JButton jButton1;
     private JScriptIDE.JScriptEditor jScriptEditor1;
     private JScriptIDE.JScriptEditor jseJavaScript;
@@ -212,5 +232,6 @@ public class JSEditor extends javax.swing.JFrame {
     private javax.swing.JTabbedPane tabMain;
     private javax.swing.JToolBar tbMain;
     private javax.swing.JTextArea txtError;
+    private javax.swing.JTextField txtSearch;
     // End of variables declaration//GEN-END:variables
 }
