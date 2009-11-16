@@ -205,7 +205,6 @@ public class SyntaxMonitor {
 
     protected void findString(String value, JTextPane txtSource, Boolean isCaseInsensitive) {
         Pattern p = null;
-        SimpleAttributeSet attr = new SimpleAttributeSet();
         String source = "";
         Matcher matcher = null;
         try {
