@@ -32,7 +32,7 @@ public class SyntaxMonitor {
     private static final String parenthesis = "\\(|\\)|\\[|\\]|\\{|\\}";
     private static final String words = "\\b\\w+|\\W+";
     private static final String variable = "\\s*?var\\s+\\w+";
-    private static final String astring = "\"[\\s*?\\w*?\\s*?]+\"";
+    private static final String astring = "\"[\\s*?\\w*?\\p{L}(!@#$%\\^&*():\\]\\[}{~\\-=+;><)*?',.]*?\"";
     private static final String java_swing = "\\b\\bJApplet\\W|\\bJButton\\W|\\bJCheckBox\\W|\\bJCheckBoxMenuItem\\W|" +
             "\\bJColorChooser\\W|\\bJComboBox\\W|\\bJComponent\\W|\\bJDesktopPane\\W|\\bJDialog\\W|\\bJEditorPane\\W|" +
             "\\bJFileChooser\\W|\\bJFormattedTextField\\W|\\bJFrame\\W|\\bJInternalFrame\\W|\\bJInternalFrame\\W|" +
@@ -41,7 +41,7 @@ public class SyntaxMonitor {
             "\\bJRootPane\\W|\\bJScrollBar\\W|\\bJScrollPane\\W|\\bJSeparator\\W|\\bJSlider\\W|\\bJSpinner\\W|\\bJSplitPane\\W|" +
             "\\bJTabbedPane\\W|\\bJTable\\W|\\bJTextArea\\W|\\bJTextField\\W|\\bJTextPane\\W|\\bJToggleButton\\W|\\bJToolBar\\W|" +
             "\\bJToolTip\\W|\\bJTree\\W|\\bJViewport\\W|\\bJWindow\\W\\b";
-    private static final String comments = "//+[\\w+\\s*?\\p{L}*?()`~!@#$%\\^&*\\[\\]\"';:<>?/\\\\,.-]+\\b";
+    private static final String comments = "//+[\\s*?\\w*?\\p{L}(!@#$%\\^&*():\\]\\[}{~\\-=+;><)*?',.]*?";
     private static SyntaxMonitor instance = null;
     private int startindex = 0;
     private String valueSearch = "";
