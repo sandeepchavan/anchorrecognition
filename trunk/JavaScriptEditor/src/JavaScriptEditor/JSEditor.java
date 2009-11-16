@@ -49,6 +49,7 @@ public class JSEditor extends javax.swing.JFrame {
         cmdFind = new javax.swing.JButton();
         txtSearch = new javax.swing.JTextField();
         cmdFindNext = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         pnlError = new javax.swing.JPanel();
         scrError = new javax.swing.JScrollPane();
         txtError = new javax.swing.JTextArea();
@@ -92,6 +93,13 @@ public class JSEditor extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setText("Replace ALL");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlControlLayout = new javax.swing.GroupLayout(pnlControl);
         pnlControl.setLayout(pnlControlLayout);
         pnlControlLayout.setHorizontalGroup(
@@ -107,7 +115,9 @@ public class JSEditor extends javax.swing.JFrame {
                 .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmdFindNext)
-                .addContainerGap(372, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(275, Short.MAX_VALUE))
         );
         pnlControlLayout.setVerticalGroup(
             pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -118,7 +128,8 @@ public class JSEditor extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(cmdFind)
                     .addComponent(txtSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmdFindNext))
+                    .addComponent(cmdFindNext)
+                    .addComponent(jButton2))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -225,6 +236,10 @@ public class JSEditor extends javax.swing.JFrame {
          jseJavaScript.findNext();
     }//GEN-LAST:event_cmdFindNextActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        jseJavaScript.replaceAll("var", "vars", false);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -241,6 +256,7 @@ public class JSEditor extends javax.swing.JFrame {
     private javax.swing.JButton cmdFind;
     private javax.swing.JButton cmdFindNext;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private JScriptIDE.JScriptEditor jScriptEditor1;
     private JScriptIDE.JScriptEditor jseJavaScript;
     private javax.swing.JLabel lblLine;
