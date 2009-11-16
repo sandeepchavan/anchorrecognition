@@ -106,6 +106,11 @@ public class JScriptEditor extends javax.swing.JPanel {
         SyntaxMonitor.Instance().findNext(linenr.txtSource);
     }
 
+    public void replaceAll(String findwhat, String replacewith, Boolean isReplaceAll) {
+        linenr.txtSource.requestFocus();
+        SyntaxMonitor.Instance().replaceAll(findwhat, replacewith, linenr.txtSource, isReplaceAll);
+    }
+
     public void addLineClickListener(LineClickListener listener) {
         linenr.listenersList.add(LineClickListener.class, listener);
     }
