@@ -231,6 +231,31 @@ public class SyntaxMonitor {
         }
     }
 
+    protected void replaceAll(String findwhat, String replacewith, JTextPane txtSource, Boolean isReplaceAll) {
+        Pattern p = null;
+        String source = "";
+        Matcher matcher = null;
+        try {
+
+            p = Pattern.compile("\\b" + findwhat + "\\W");
+
+            txtSource.selectAll();
+            source = txtSource.getSelectedText();
+            matcher = p.matcher(source);
+            if (matcher.find()) {
+                txtSource.setSelectionStart(matcher.start());
+                txtSource.setSelectionEnd(matcher.end());
+                txtSource.replaceSelection(replacewith);
+                if (isReplaceAll) {
+                    replaceAll(findwhat, replacewith, txtSource, isReplaceAll);
+                }
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
     protected void findNext(JTextPane txtSource) {
         findString(valueSearch, txtSource, this.isCaseInsensitive, startindex);
     }
