@@ -45,6 +45,7 @@ public class JSEditor extends javax.swing.JFrame {
         pnlMain = new javax.swing.JPanel();
         pnlControl = new javax.swing.JPanel();
         cmdCompile = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         pnlError = new javax.swing.JPanel();
         scrError = new javax.swing.JScrollPane();
         txtError = new javax.swing.JTextArea();
@@ -67,6 +68,13 @@ public class JSEditor extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Save");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlControlLayout = new javax.swing.GroupLayout(pnlControl);
         pnlControl.setLayout(pnlControlLayout);
         pnlControlLayout.setHorizontalGroup(
@@ -74,13 +82,17 @@ public class JSEditor extends javax.swing.JFrame {
             .addGroup(pnlControlLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(cmdCompile)
-                .addContainerGap(857, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap(794, Short.MAX_VALUE))
         );
         pnlControlLayout.setVerticalGroup(
             pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlControlLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(cmdCompile)
+                .addGroup(pnlControlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmdCompile)
+                    .addComponent(jButton1))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
@@ -171,6 +183,10 @@ public class JSEditor extends javax.swing.JFrame {
         lblLine.setText(String.valueOf(evt.getLine_clicking()));
     }//GEN-LAST:event_jseJavaScriptLineClickPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jseJavaScript.saveSource("source.js");
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -184,6 +200,7 @@ public class JSEditor extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdCompile;
+    private javax.swing.JButton jButton1;
     private JScriptIDE.JScriptEditor jScriptEditor1;
     private JScriptIDE.JScriptEditor jseJavaScript;
     private javax.swing.JLabel lblLine;
