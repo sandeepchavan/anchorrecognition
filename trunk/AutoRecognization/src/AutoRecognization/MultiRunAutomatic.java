@@ -10,17 +10,27 @@
  */
 package AutoRecognization;
 
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.PopupMenu;
+import java.awt.SystemTray;
+import java.awt.Toolkit;
+import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.jai.PlanarImage;
 import javax.media.jai.iterator.RandomIterFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.UIManager;
 
 /**
@@ -135,6 +145,26 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         arrcn = Configuration.Instance().readConnection().split(";");
         cmdStartAuto.doClick();
+        createTrayIcon();
+    }
+
+    private void createTrayIcon() {
+        PopupMenu menu = new PopupMenu("A Menu");
+        Image i = Toolkit.getDefaultToolkit().getImage("OCR.jpg");
+        TrayIcon ti = new TrayIcon(i, "Douglas OCR", menu);
+
+        ti.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                MultiRunAutomatic.this.setVisible(!MultiRunAutomatic.this.isVisible());
+            }
+        });
+        SystemTray tray = SystemTray.getSystemTray();
+        try {
+            tray.add(ti);
+        } catch (AWTException ex) {
+            Logger.getLogger(MultiRunAutomatic.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private void ChooseFileImage() {
@@ -496,6 +526,7 @@ public class MultiRunAutomatic extends javax.swing.JFrame {
 
             public void run() {
                 MultiRunAutomatic.Instance().setVisible(true);
+                MultiRunAutomatic.Instance().setVisible(false);
             }
         });
     }

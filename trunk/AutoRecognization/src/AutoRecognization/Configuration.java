@@ -44,7 +44,7 @@ public class Configuration {
     public void writeFailResult(String name, String value) {
         try {
             Writer output = null;
-            File file = new File("P:\\application\\gbs_douglas_card_del\\OCR\\Douglas Card 3\\FailRecognition_" + name + ".txt");
+            File file = new File("FailRecognition_" + name + ".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -58,7 +58,7 @@ public class Configuration {
     public void writeCorrectResult(String name, String value) {
         try {
             Writer output = null;
-            File file = new File("P:\\application\\gbs_douglas_card_del\\OCR\\Douglas Card 3CorrectRecognition_" + name + ".txt");
+            File file = new File("CorrectRecognition_" + name + ".txt");
             if (!file.exists()) {
                 file.createNewFile();
             }
