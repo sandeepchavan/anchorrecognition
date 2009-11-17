@@ -125,7 +125,7 @@ public class SyntaxMonitor {
         }
     }
 
-     private void matchComment(DefaultStyledDocument dsd) {
+    private void matchComment(DefaultStyledDocument dsd) {
         Pattern p = null;
         SimpleAttributeSet attr = new SimpleAttributeSet();
         String source = "";
@@ -242,11 +242,13 @@ public class SyntaxMonitor {
             txtSource.selectAll();
             source = txtSource.getSelectedText();
             matcher = p.matcher(source);
-            matcher.find(startindex);
-            this.startindex = matcher.end();
-            txtSource.setSelectionStart(matcher.start());
-            txtSource.setSelectionEnd(matcher.end());
-
+            if (matcher.find(startindex)) {
+                this.startindex = matcher.end();
+                txtSource.setSelectionStart(matcher.start());
+                txtSource.setSelectionEnd(matcher.end());
+            } else {
+                this.startindex = 0;
+            }
         } catch (Exception ex) {
             Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
         }
