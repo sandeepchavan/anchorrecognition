@@ -93,7 +93,7 @@ public class JScriptEditor extends javax.swing.JPanel {
 
     /**
      * Search String in Source code
-     * @param value whi
+     * @param value - a string which you want to find
      * @param isCaseInsensitive
      */
     public void findString(String value, Boolean isCaseInsensitive, int startindex) {
@@ -101,11 +101,20 @@ public class JScriptEditor extends javax.swing.JPanel {
         SyntaxMonitor.Instance().findString(value, linenr.txtSource, isCaseInsensitive, startindex);
     }
 
+    /**
+     * Find next.
+     */
     public void findNext() {
         linenr.txtSource.requestFocus();
         SyntaxMonitor.Instance().findNext(linenr.txtSource);
     }
 
+    /**
+     * replace string by another string.
+     * @param findwhat
+     * @param replacewith
+     * @param isReplaceAll - if value is true, then the function will replace all, otherwise it just replace the first once.
+     */
     public void replaceAll(String findwhat, String replacewith, Boolean isReplaceAll) {
         linenr.txtSource.requestFocus();
         SyntaxMonitor.Instance().replaceAll(findwhat, replacewith, linenr.txtSource, isReplaceAll);
