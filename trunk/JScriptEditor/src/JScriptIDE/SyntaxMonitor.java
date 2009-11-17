@@ -41,7 +41,8 @@ public class SyntaxMonitor {
             "\\bJRootPane\\W|\\bJScrollBar\\W|\\bJScrollPane\\W|\\bJSeparator\\W|\\bJSlider\\W|\\bJSpinner\\W|\\bJSplitPane\\W|" +
             "\\bJTabbedPane\\W|\\bJTable\\W|\\bJTextArea\\W|\\bJTextField\\W|\\bJTextPane\\W|\\bJToggleButton\\W|\\bJToolBar\\W|" +
             "\\bJToolTip\\W|\\bJTree\\W|\\bJViewport\\W|\\bJWindow\\W\\b";
-    private static final String comments = "//+[\\s*?\\w*?\\p{L}(!@#$%\\^&*():\\]\\[}{~\\-=+;><)*?',.]*?";
+    private static final String comments = "//[\\s*?\\w*?\\p{L}(!@#$%\\^&*():\\]\\[}{~\\-=+;></\")*?',.]*?$";
+    private static final String multi_comments = "/\\*[\\s*?\\w*?\\p{L}(!@#$%\\^&*():\\]\\[}{~\\-=+;></;\")*?',.]*?\\*/";
     private static SyntaxMonitor instance = null;
     private int startindex = 0;
     private String valueSearch = "";
@@ -64,6 +65,7 @@ public class SyntaxMonitor {
         matchString(dsd);
         matchKeyWord(dsd);
         matchComment(dsd);
+        matchMultiComment(dsd);
     }
 
     private void matchKeyWord(DefaultStyledDocument dsd) {
@@ -104,13 +106,32 @@ public class SyntaxMonitor {
         }
     }
 
-    private void matchComment(DefaultStyledDocument dsd) {
+    private void matchMultiComment(DefaultStyledDocument dsd) {
         Pattern p = null;
         SimpleAttributeSet attr = new SimpleAttributeSet();
         String source = "";
         Matcher matcher = null;
         try {
-            p = Pattern.compile(comments);
+            p = Pattern.compile(multi_comments);
+            source = dsd.getText(0, dsd.getLength());
+            matcher = p.matcher(source);
+            while (matcher.find()) {
+                attr.addAttribute(StyleConstants.Bold, new Boolean(false));
+                StyleConstants.setForeground(attr, Color.lightGray);
+                dsd.setCharacterAttributes(matcher.start(), matcher.group().length(), attr, false);
+            }
+        } catch (BadLocationException ex) {
+            Logger.getLogger(SyntaxMonitor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+     private void matchComment(DefaultStyledDocument dsd) {
+        Pattern p = null;
+        SimpleAttributeSet attr = new SimpleAttributeSet();
+        String source = "";
+        Matcher matcher = null;
+        try {
+            p = Pattern.compile(comments, Pattern.MULTILINE);
             source = dsd.getText(0, dsd.getLength());
             matcher = p.matcher(source);
             while (matcher.find()) {
