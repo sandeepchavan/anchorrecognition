@@ -229,7 +229,7 @@ public class JSEditor extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void cmdFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdFindActionPerformed
-        jseJavaScript.findString(txtSearch.getText(), true,0);
+        jseJavaScript.findString(txtSearch.getText(), true);
     }//GEN-LAST:event_cmdFindActionPerformed
 
     private void cmdFindNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdFindNextActionPerformed
