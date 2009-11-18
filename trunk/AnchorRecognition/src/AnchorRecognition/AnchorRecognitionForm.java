@@ -72,6 +72,8 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         lblAxis = new javax.swing.JLabel();
         cmdSave = new javax.swing.JButton();
         cmdSaveConfig = new javax.swing.JButton();
+        cmdPrevious = new javax.swing.JButton();
+        cmdNext = new javax.swing.JButton();
         scrImage = new javax.swing.JScrollPane();
         imageDisplayer = new AnchorRecognition.ImageDisplayer();
 
@@ -104,6 +106,20 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
             }
         });
 
+        cmdPrevious.setText("<<");
+        cmdPrevious.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdPreviousActionPerformed(evt);
+            }
+        });
+
+        cmdNext.setText(">>");
+        cmdNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdNextActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnlPanelLayout = new javax.swing.GroupLayout(pnlPanel);
         pnlPanel.setLayout(pnlPanelLayout);
         pnlPanelLayout.setHorizontalGroup(
@@ -111,11 +127,16 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
             .addGroup(pnlPanelLayout.createSequentialGroup()
                 .addComponent(cmdLoadImage, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblAxis, javax.swing.GroupLayout.PREFERRED_SIZE, 557, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblAxis, javax.swing.GroupLayout.PREFERRED_SIZE, 451, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdPrevious)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdNext, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cmdSave)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmdSaveConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(cmdSaveConfig, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
         );
         pnlPanelLayout.setVerticalGroup(
             pnlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,6 +144,8 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
                 .addGroup(pnlPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmdLoadImage)
                     .addComponent(lblAxis, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdPrevious)
+                    .addComponent(cmdNext)
                     .addComponent(cmdSave)
                     .addComponent(cmdSaveConfig))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -132,7 +155,7 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         imageDisplayer.setLayout(imageDisplayerLayout);
         imageDisplayerLayout.setHorizontalGroup(
             imageDisplayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 830, Short.MAX_VALUE)
+            .addGap(0, 837, Short.MAX_VALUE)
         );
         imageDisplayerLayout.setVerticalGroup(
             imageDisplayerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,7 +172,7 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnlMainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(scrImage, javax.swing.GroupLayout.Alignment.LEADING, 0, 0, Short.MAX_VALUE)
-                    .addComponent(pnlPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnlPanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 839, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlMainLayout.setVerticalGroup(
@@ -189,6 +212,14 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         writeTemplete();
     }//GEN-LAST:event_cmdSaveConfigActionPerformed
 
+    private void cmdNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdNextActionPerformed
+          setImage(imgpathglobal, 1);
+    }//GEN-LAST:event_cmdNextActionPerformed
+
+    private void cmdPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdPreviousActionPerformed
+         setImage(imgpathglobal, 0);
+    }//GEN-LAST:event_cmdPreviousActionPerformed
+
     private void writeTemplete() {
         try {
             Writer output = null;
@@ -212,17 +243,17 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             imgpathglobal = chooser.getSelectedFile().getAbsolutePath();
-            setImage(imgpathglobal);
+            setImage(imgpathglobal, 0);
             Configuration.Instance().writeConfig(chooser.getSelectedFile().getParent());
         }
     }
 
-    private void setImage(String filename) {
+    private void setImage(String filename, int Page) {
         PlanarImage image = null;
         this.repaint();
         try {
             try {
-                image = tiff.readImage(filename, 0, 100, 0);
+                image = tiff.readImage(filename, Page, 100, 0);
                 RandomIterFactory.create(image, null);
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -243,6 +274,8 @@ public class AnchorRecognitionForm extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdLoadImage;
+    private javax.swing.JButton cmdNext;
+    private javax.swing.JButton cmdPrevious;
     private javax.swing.JButton cmdSave;
     private javax.swing.JButton cmdSaveConfig;
     private AnchorRecognition.ImageDisplayer imageDisplayer;
