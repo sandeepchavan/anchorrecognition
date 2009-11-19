@@ -194,23 +194,6 @@ public class MainForm extends javax.swing.JFrame {
         }
         str = str.replace("A", "");
         return str;
-        /*String str = jaiRecognitionctr.RecognizeICRImage().get(0);
-        System.out.println(str);
-        char[] carr = str.toLowerCase().toCharArray();
-        StringBuffer strBuff = new StringBuffer();
-        for (char c : carr) {
-        if (Character.isDigit(c)) {
-        strBuff.append(c);
-        }
-        }
-        String arr[] = strBuff.toString().split("\n");
-        for (String temp : arr) {
-        if (temp.length() >= 17) {
-        str = temp;
-        break;
-        }
-        }
-        return str;*/
     }
 
     private void setImage(String filename) {
