@@ -121,4 +121,25 @@ public class Configuration {
             return ret;
         }
     }
+
+     public String readTempleteField2() {
+        String ret = "";
+        try {
+            BufferedReader input = null;
+            StringBuilder contents = new StringBuilder();
+            File file = new File("Field2Templete.txt");
+            if (file.exists()) {
+                input = new BufferedReader(new FileReader(file));
+                while ((ret = input.readLine()) != null) {
+                    contents.append(ret);
+                    contents.append(System.getProperty("line.separator"));
+                }
+                ret = contents.toString();
+                input.close();
+            }
+        } catch (IOException ex) {
+        } finally {
+            return ret;
+        }
+    }
 }
