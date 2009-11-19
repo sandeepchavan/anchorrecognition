@@ -1,0 +1,1 @@
+jdbc:postgresql://10.10.5.55:5432/production;gbs_douglas_card;gbs_doug#las_card$09pass%;savedb
