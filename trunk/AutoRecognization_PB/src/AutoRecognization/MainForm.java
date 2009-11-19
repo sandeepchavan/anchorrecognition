@@ -180,10 +180,10 @@ public class MainForm extends javax.swing.JFrame {
             jaiRecognitionctr.calculateForm2Text(cbxTypeFormTemplete.getItemAt(1).toString());
             ret.append("\n");
             ret.append(jaiRecognitionctr.RecognizeOCRImage().get(0));
-            setImage(absolutepath, 1);
-            jaiRecognitionctr.calculateForm2Page2(cbxTypeFormTemplete.getItemAt(1).toString());
-            ret.append("\n");
-            ret.append(getOCRforMatching());
+            //setImage(absolutepath, 1);
+            //jaiRecognitionctr.calculateForm2Page2(cbxTypeFormTemplete.getItemAt(1).toString());
+            //ret.append("\n");
+            //ret.append(getOCRforMatching());
             txtRecognization.setForeground(Color.BLACK);
             getContentOCR().append(path);
             getContentOCR().append(";");
