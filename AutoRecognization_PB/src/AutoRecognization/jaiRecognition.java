@@ -107,6 +107,18 @@ public class jaiRecognition extends DisplayJAI {
         return null;
     }
 
+     public ArrayList<String> RecognizeOCRImage() {
+        ocrobj.setSlideX(0);
+        ocrobj.setSlideY(0);
+        if (ocrobj.LoadImage(img, reclist)) {
+            if (ocrobj.callOCREngine()) {
+                ArrayList<String> result = ocrobj.getAllResultRecognition();
+                return result;
+            }
+        }
+        return null;
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -134,6 +146,62 @@ public class jaiRecognition extends DisplayJAI {
             temp.height = Integer.valueOf(strs[1].trim());
             reclist.add(temp);
         }
+        calcomplete = true;
+        repaint();
+    }
+
+    public void calculateForm2(String type) {
+        reclist.clear();
+        String[] coordinates = type.split(";");
+        for (int i = 0; i < 2; i++) {
+            String[] strs = coordinates[i].split(",");
+            int y = 0;
+            int x = 0;
+            y = this.getHeight() - Integer.valueOf(strs[3].trim());
+            x = this.getWidth() - Integer.valueOf(strs[2].trim());
+            Rectangle temp = new Rectangle();
+            temp.x = x;
+            temp.y = y;
+            temp.width = Integer.valueOf(strs[0].trim());
+            temp.height = Integer.valueOf(strs[1].trim());
+            reclist.add(temp);
+        }
+        calcomplete = true;
+        repaint();
+    }
+
+    public void calculateForm2Text(String type) {
+        reclist.clear();
+        String[] coordinates = type.split(";");
+        String[] strs = coordinates[2].split(",");
+        int y = 0;
+        int x = 0;
+        y = this.getHeight() - Integer.valueOf(strs[3].trim());
+        x = this.getWidth() - Integer.valueOf(strs[2].trim());
+        Rectangle temp = new Rectangle();
+        temp.x = x;
+        temp.y = y;
+        temp.width = Integer.valueOf(strs[0].trim());
+        temp.height = Integer.valueOf(strs[1].trim());
+        reclist.add(temp);
+        calcomplete = true;
+        repaint();
+    }
+
+     public void calculateForm2Page2(String type) {
+        reclist.clear();
+        String[] coordinates = type.split(";");
+        String[] strs = coordinates[3].split(",");
+        int y = 0;
+        int x = 0;
+        y = this.getHeight() - Integer.valueOf(strs[3].trim());
+        x = this.getWidth() - Integer.valueOf(strs[2].trim());
+        Rectangle temp = new Rectangle();
+        temp.x = x;
+        temp.y = y;
+        temp.width = Integer.valueOf(strs[0].trim());
+        temp.height = Integer.valueOf(strs[1].trim());
+        reclist.add(temp);
         calcomplete = true;
         repaint();
     }

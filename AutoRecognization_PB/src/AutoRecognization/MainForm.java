@@ -39,6 +39,7 @@ public class MainForm extends javax.swing.JFrame {
     private StringBuilder failcontentOCR = null;
     private String[] arrcn = null;
     private static MainForm instance = null;
+    private String field2 = "";
 
     public static MainForm Instance() {
         if (instance == null) {
@@ -110,9 +111,9 @@ public class MainForm extends javax.swing.JFrame {
         getChooser().setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         lstImages.setModel(getDlm());
         this.setLocationRelativeTo(null);
-        String[] type = Configuration.Instance().readTemplete().split("\n");
-        for (String str : type) {
-            cbxType.addItem(str);
+        String[] typetemplete = Configuration.Instance().readTemplete().split("\n");
+        for (String str : typetemplete) {
+            cbxTypeFormTemplete.addItem(str);
         }
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         arrcn = Configuration.Instance().readConnection().split(";");
@@ -141,30 +142,67 @@ public class MainForm extends javax.swing.JFrame {
     private void matchForm() {
         File focr = new File(lstImages.getSelectedValue().toString());
         String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
+        int retdef = defineForm(strpath);
+        if (retdef == 1) {
+            handleForm1(strpath, focr.getAbsolutePath().substring(2));
+            return;
+        } else {
+            handleForm2(strpath, focr.getAbsolutePath().substring(2));
+            return;
+        }
+    }
+
+    private void handleForm1(String path, String absolutepath) {
+
         String ret = "";
-        for (int i = 0; i < cbxType.getItemCount(); i++) {
-            jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
-            ret = getOCRforMatching();
-            if (ret.length() == 26) {
-                txtRecognization.setForeground(Color.BLACK);
-                getContentOCR().append(strpath);
-                getContentOCR().append(";");
-                getContentOCR().append(ret);
-                getContentOCR().append("\n");
-                txtRecognization.setText(ret);
-                cbxType.setSelectedIndex(i);
-                if (arrcn[3].equals("savedb") && chkAuto.isSelected()) {
-                    DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).updOrinstData(focr.getAbsolutePath().substring(2), ret);
-                }
-                return;
+        jaiRecognitionctr.calculate(cbxTypeFormTemplete.getItemAt(0).toString());
+        ret = getOCRforMatching();
+        if (ret.length() == 26) {
+            txtRecognization.setForeground(Color.BLACK);
+            getContentOCR().append(path);
+            getContentOCR().append(";");
+            getContentOCR().append(ret);
+            getContentOCR().append("\n");
+            txtRecognization.setText(ret);
+            cbxTypeFormTemplete.setSelectedIndex(0);
+            if (arrcn[3].equals("savedb") && chkAuto.isSelected()) {
+                DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).updOrinstData(absolutepath, ret);
             }
         }
-        txtRecognization.setForeground(Color.RED);
-        txtRecognization.setText(ret);
-        getFailcontentOCR().append(strpath);
-        getFailcontentOCR().append(";");
-        getFailcontentOCR().append(ret);
-        getFailcontentOCR().append("\n");
+    }
+
+    private void handleForm2(String path, String absolutepath) {
+
+        StringBuilder ret = new StringBuilder("");
+        jaiRecognitionctr.calculateForm2(cbxTypeFormTemplete.getItemAt(1).toString());
+        ret.append(getOCRforMatching());
+        if (ret.length() == 18) {
+            jaiRecognitionctr.calculateForm2Text(cbxTypeFormTemplete.getItemAt(1).toString());
+            ret.append("\n");
+            ret.append(jaiRecognitionctr.RecognizeOCRImage().get(0));
+            setImage(absolutepath, 1);
+            jaiRecognitionctr.calculateForm2Page2(cbxTypeFormTemplete.getItemAt(1).toString());
+            ret.append("\n");
+            ret.append(getOCRforMatching());
+            txtRecognization.setForeground(Color.BLACK);
+            getContentOCR().append(path);
+            getContentOCR().append(";");
+            getContentOCR().append(ret);
+            getContentOCR().append("\n");
+            txtRecognization.setText(ret.toString());
+            cbxTypeFormTemplete.setSelectedIndex(1);
+            if (arrcn[3].equals("savedb") && chkAuto.isSelected()) {
+                DataHandler.Instance(arrcn[0], arrcn[1], arrcn[2]).updOrinstData(absolutepath, ret.toString());
+            }
+        }
+    }
+
+    private int defineForm(String path) {
+        if (path.contains("987003_")) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 
     private void writeResult() {
@@ -180,11 +218,11 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     private String getOCRforMatching() {
-        long start = new Date().getTime();
+        //long start = new Date().getTime();
         ArrayList<String> lstret = jaiRecognitionctr.RecognizeICRImage();
-        long end = new Date().getTime();
+        /*long end = new Date().getTime();
         long duration = end - start;
-        System.out.println("Took: " + duration);
+        System.out.println("Took: " + duration);*/
         StringBuilder sb = new StringBuilder("");
         for (String tempstr : lstret) {
             String str = tempstr.replace("\n", "A");
@@ -204,15 +242,15 @@ public class MainForm extends javax.swing.JFrame {
             str = str.replace("A", "");
             sb.append(str);
         }
-        return sb.toString();
+        return sb.toString().trim();
     }
 
-    private void setImage(String filename) {
+    private void setImage(String filename, int page) {
         PlanarImage image = null;
         this.repaint();
         try {
             try {
-                image = getTiff().readImage(filename, 0, 100, 0);
+                image = getTiff().readImage(filename, page, 100, 0);
                 RandomIterFactory.create(image, null);
             } catch (Exception ex) {
                 System.out.println(ex);
@@ -248,6 +286,7 @@ public class MainForm extends javax.swing.JFrame {
         lstImages = new javax.swing.JList();
         cbxType = new javax.swing.JComboBox();
         cmdShow = new javax.swing.JButton();
+        cbxTypeFormTemplete = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auto Recognition For Douglas Card");
@@ -274,8 +313,7 @@ public class MainForm extends javax.swing.JFrame {
         });
 
         txtRecognization.setColumns(20);
-        txtRecognization.setFont(new java.awt.Font("Arial", 1, 18));
-        txtRecognization.setLineWrap(true);
+        txtRecognization.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         txtRecognization.setRows(5);
         jspText.setViewportView(txtRecognization);
 
@@ -308,6 +346,8 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        cbxTypeFormTemplete.setEnabled(false);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -326,9 +366,10 @@ public class MainForm extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jspImages, javax.swing.GroupLayout.DEFAULT_SIZE, 385, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbxType, 0, 224, Short.MAX_VALUE)
-                            .addComponent(chkAuto, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE))))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cbxType, javax.swing.GroupLayout.Alignment.LEADING, 0, 224, Short.MAX_VALUE)
+                            .addComponent(chkAuto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 224, Short.MAX_VALUE)
+                            .addComponent(cbxTypeFormTemplete, 0, 224, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -347,7 +388,9 @@ public class MainForm extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(cbxType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(chkAuto)))
+                        .addComponent(chkAuto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbxTypeFormTemplete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jspImageRecognition, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
                 .addContainerGap())
@@ -379,7 +422,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void lstImagesValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_lstImagesValueChanged
         if (lstImages.getSelectedValue() != null) {
-            setImage(lstImages.getSelectedValue().toString());
+            setImage(lstImages.getSelectedValue().toString(), 0);
             timer.start();
         }
 }//GEN-LAST:event_lstImagesValueChanged
@@ -398,6 +441,7 @@ public class MainForm extends javax.swing.JFrame {
     }//GEN-LAST:event_cmdShowActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox cbxType;
+    private javax.swing.JComboBox cbxTypeFormTemplete;
     private javax.swing.JCheckBox chkAuto;
     private javax.swing.JButton cmdLoad;
     private javax.swing.JButton cmdRecognize;
