@@ -155,7 +155,7 @@ public class MultiRun extends javax.swing.JFrame {
         getDlm().clear();
         imgpathglobal = lstFolder.getSelectedValue().toString();
         File folder = new File(imgpathglobal);
-        for (File f : folder.listFiles()[0].listFiles()) {
+        for (File f : folder.listFiles()) {
             if (f.getAbsolutePath().endsWith(".tif")) {
                 getDlm().addElement(f.getAbsolutePath());
             }
@@ -164,14 +164,13 @@ public class MultiRun extends javax.swing.JFrame {
 
     private void matchForm() {
         File focr = new File(lstImages.getSelectedValue().toString());
-        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
         String ret = "";
         for (int i = 0; i < cbxType.getItemCount(); i++) {
             jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
             ret = getOCRforMatching();
-            if (ret.length() == 17 && ret.startsWith("000")) {
+            if (ret.length() == 12) {
                 txtRecognization.setForeground(Color.BLACK);
-                getContentOCR().append(strpath);
+                getContentOCR().append(focr.getAbsolutePath());
                 getContentOCR().append(";");
                 getContentOCR().append(ret);
                 getContentOCR().append("\n");
@@ -185,7 +184,7 @@ public class MultiRun extends javax.swing.JFrame {
         }
         txtRecognization.setForeground(Color.RED);
         txtRecognization.setText(ret);
-        getFailcontentOCR().append(strpath);
+        getFailcontentOCR().append(focr.getAbsolutePath());
         getFailcontentOCR().append(";");
         getFailcontentOCR().append(ret);
         getFailcontentOCR().append("\n");
@@ -194,9 +193,9 @@ public class MultiRun extends javax.swing.JFrame {
     private void writeResult() {
         if (lstImages.getSelectedIndex() == (getDlm().getSize() - 1) && chkAuto.isSelected()) {
             File focr = new File(lstImages.getSelectedValue().toString());
-            Configuration.Instance().writeFailResult(focr.getParentFile().getParentFile().getName(), getFailcontentOCR().toString());
+            Configuration.Instance().writeFailResult(focr.getParentFile().getName(), getFailcontentOCR().toString());
             failcontentOCR = null;
-            Configuration.Instance().writeCorrectResult(focr.getParentFile().getParentFile().getName(), getContentOCR().toString());
+            Configuration.Instance().writeCorrectResult(focr.getParentFile().getName(), getContentOCR().toString());
             contentOCR = null;
             unlockControl(true);
             if (lstFolder.getSelectedIndex() < (getDlmfolders().size() - 1)) {

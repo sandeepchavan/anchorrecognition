@@ -38,8 +38,8 @@ public class MainForm extends javax.swing.JFrame {
     private String[] arrcn = null;
     private static MainForm instance = null;
 
-    public static MainForm Instance(){
-        if(instance==null){
+    public static MainForm Instance() {
+        if (instance == null) {
             instance = new MainForm();
         }
         return instance;
@@ -138,14 +138,13 @@ public class MainForm extends javax.swing.JFrame {
 
     private void matchForm() {
         File focr = new File(lstImages.getSelectedValue().toString());
-        String strpath = focr.getParentFile().getParentFile().getName() + "/" + focr.getParentFile().getName() + "/" + focr.getName();
         String ret = "";
         for (int i = 0; i < cbxType.getItemCount(); i++) {
             jaiRecognitionctr.calculate(cbxType.getItemAt(i).toString());
             ret = getOCRforMatching();
-            if (ret.length() == 17 && ret.startsWith("000")) {
+            if (ret.length() == 12) {
                 txtRecognization.setForeground(Color.BLACK);
-                getContentOCR().append(strpath);
+                getContentOCR().append(focr.getAbsolutePath());
                 getContentOCR().append(";");
                 getContentOCR().append(ret);
                 getContentOCR().append("\n");
@@ -159,7 +158,7 @@ public class MainForm extends javax.swing.JFrame {
         }
         txtRecognization.setForeground(Color.RED);
         txtRecognization.setText(ret);
-        getFailcontentOCR().append(strpath);
+        getFailcontentOCR().append(focr.getAbsolutePath());
         getFailcontentOCR().append(";");
         getFailcontentOCR().append(ret);
         getFailcontentOCR().append("\n");
