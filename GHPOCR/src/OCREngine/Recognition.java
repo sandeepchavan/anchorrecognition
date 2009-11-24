@@ -31,7 +31,20 @@ public class Recognition {
     private Languages language = Languages.ENGLISH;
     private final String LANG_OPTION = "-l";
     private final String EOL = System.getProperty("line.separator");
-    private final String PATHOCRCORE="C:/OCRCore/OCRApp/";
+    private final String PATHOCRCORE = "C:/OCRCore/OCRApp/";
+
+    public void setImg(Image img) {
+        this.img = img;
+    }
+
+    public boolean setReclist(ArrayList<Rectangle> reclist) {
+        this.resultlist.clear();
+        this.reclist = reclist;
+        if (!splitImages(false)) {
+            return false;
+        }
+        return true;
+    }
 
     /**
      * @return the language
