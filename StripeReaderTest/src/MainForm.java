@@ -1,3 +1,7 @@
+
+import StripeReader.BarcodeReader;
+import StripeReader.core.Result;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -8,14 +12,13 @@
  *
  * Created on Nov 24, 2009, 9:38:58 PM
  */
-
 /**
  *
  * @author Mr.Da
  */
-
-
 public class MainForm extends javax.swing.JFrame {
+
+    private BarcodeReader barcodereader = new BarcodeReader();
 
     /** Creates new form MainForm */
     public MainForm() {
@@ -32,6 +35,9 @@ public class MainForm extends javax.swing.JFrame {
     private void initComponents() {
 
         cmdRead = new javax.swing.JButton();
+        txtURL = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtResult = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -42,21 +48,35 @@ public class MainForm extends javax.swing.JFrame {
             }
         });
 
+        txtResult.setColumns(20);
+        txtResult.setEditable(false);
+        txtResult.setRows(5);
+        jScrollPane1.setViewportView(txtResult);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(183, 183, 183)
-                .addComponent(cmdRead)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtURL, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdRead)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(116, Short.MAX_VALUE)
-                .addComponent(cmdRead)
-                .addGap(19, 19, 19))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtURL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdRead))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -64,22 +84,31 @@ public class MainForm extends javax.swing.JFrame {
 
     private void cmdReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdReadActionPerformed
         // TODO add your handling code here:
-        Main.readBarcode("C:/DataMatrixSymbol.gif");
+        Result ret = barcodereader.readBarcode(txtURL.getText());
+        StringBuilder sb = new StringBuilder("");
+        sb.append("Type: ");
+        sb.append(ret.getBarcodeFormat().getName());
+        sb.append("\n");
+        sb.append("Result: ");
+        sb.append(ret.getText());
+        txtResult.setText(sb.toString());
     }//GEN-LAST:event_cmdReadActionPerformed
 
     /**
-    * @param args the command line arguments
-    */
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new MainForm().setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdRead;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea txtResult;
+    private javax.swing.JTextField txtURL;
     // End of variables declaration//GEN-END:variables
-
 }
