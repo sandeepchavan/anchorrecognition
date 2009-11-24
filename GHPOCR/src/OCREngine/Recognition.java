@@ -37,10 +37,16 @@ public class Recognition {
         this.img = img;
     }
 
-    public boolean setReclist(ArrayList<Rectangle> reclist) {
+    /**
+     * Set rectangles for OCR
+     * @param reclist - list of rectangles
+     * @param ICR - true if you want to use ICR, false if you want to use OCR
+     * @return true if set list of rectangle successfully, otherwise return false
+     */
+    public boolean setReclist(ArrayList<Rectangle> reclist, boolean ICR) {
         this.resultlist.clear();
         this.reclist = reclist;
-        if (!splitImages(false)) {
+        if (!splitImages(ICR)) {
             return false;
         }
         return true;
