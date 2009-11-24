@@ -100,6 +100,13 @@ public class jaiRecognition extends DisplayJAI {
         ocrobj.setSlideY(0);
         reclist.clear();
         reclist.add(newrecanchor);
+        ocrobj.setImg(img);
+        /*if (ocrobj.setReclist(reclist, false)) {
+        if (ocrobj.callOCREngine()) {
+        ArrayList<String> result = ocrobj.getAllResultRecognition();
+        return result;
+        }
+        }*/
         if (ocrobj.LoadImageICR(img, reclist)) {
             if (ocrobj.callICREngine()) {
                 ArrayList<String> result = ocrobj.getAllResultRecognition();
