@@ -1,6 +1,7 @@
 
 import StripeReader.BarcodeReader;
 import StripeReader.core.Result;
+import javax.swing.JFileChooser;
 
 /*
  * To change this template, choose Tools | Templates
@@ -19,10 +20,12 @@ import StripeReader.core.Result;
 public class MainForm extends javax.swing.JFrame {
 
     private BarcodeReader barcodereader = new BarcodeReader();
+    private JFileChooser chooser = new JFileChooser();
 
     /** Creates new form MainForm */
     public MainForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /** This method is called from within the constructor to
@@ -84,14 +87,17 @@ public class MainForm extends javax.swing.JFrame {
 
     private void cmdReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdReadActionPerformed
         // TODO add your handling code here:
-        Result ret = barcodereader.readBarcode(txtURL.getText());
-        StringBuilder sb = new StringBuilder("");
-        sb.append("Type: ");
-        sb.append(ret.getBarcodeFormat().getName());
-        sb.append("\n");
-        sb.append("Result: ");
-        sb.append(ret.getText());
-        txtResult.setText(sb.toString());
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            txtURL.setText(chooser.getSelectedFile().getAbsolutePath());
+            Result ret = barcodereader.readBarcode(txtURL.getText());
+            StringBuilder sb = new StringBuilder("");
+            sb.append("Type: ");
+            sb.append(ret.getBarcodeFormat().getName());
+            sb.append("\n");
+            sb.append("Result: ");
+            sb.append(ret.getText());
+            txtResult.setText(sb.toString());
+        }
     }//GEN-LAST:event_cmdReadActionPerformed
 
     /**
