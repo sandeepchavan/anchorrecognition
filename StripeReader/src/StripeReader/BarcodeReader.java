@@ -93,9 +93,9 @@ public class BarcodeReader {
             BinaryBitmap bitmap = new BinaryBitmap(new GlobalHistogramBinarizer(source));
             Result result = new MultiFormatReader().decode(bitmap, hints);
             ParsedResult parsedResult = ResultParser.parseResult(result);
-            System.out.println(uri.toString() + " (format: " + result.getBarcodeFormat() +
+            /*System.out.println(uri.toString() + " (format: " + result.getBarcodeFormat() +
                     ", type: " + parsedResult.getType() + "):\nRaw result:\n" + result.getText() +
-                    "\nParsed result:\n" + parsedResult.getDisplayResult());
+                    "\nParsed result:\n" + parsedResult.getDisplayResult());*/
             return result;
         } catch (ReaderException e) {
             System.out.println(uri.toString() + ": No barcode found");
