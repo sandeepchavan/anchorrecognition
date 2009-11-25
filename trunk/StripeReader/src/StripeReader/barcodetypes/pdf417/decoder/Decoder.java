@@ -3,14 +3,7 @@ package StripeReader.barcodetypes.pdf417.decoder;
 import StripeReader.core.ReaderException;
 import StripeReader.common.BitMatrix;
 import StripeReader.common.DecoderResult;
-//import com.google.zxing.pdf417.reedsolomon.ReedSolomonDecoder;
 
-/**
- * <p>The main class which implements PDF417 Code decoding -- as
- * opposed to locating and extracting the PDF417 Code from an image.</p>
- *
- * @author SITA Lab (kevin.osullivan@sita.aero)
- */
 public final class Decoder {
 
     private static final int MAX_ERRORS = 3;
