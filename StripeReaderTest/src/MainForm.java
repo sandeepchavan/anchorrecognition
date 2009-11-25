@@ -43,6 +43,7 @@ public class MainForm extends javax.swing.JFrame {
         txtResult = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Barcode Reader");
 
         cmdRead.setText("Read");
         cmdRead.addActionListener(new java.awt.event.ActionListener() {
@@ -86,7 +87,6 @@ public class MainForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cmdReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdReadActionPerformed
-        // TODO add your handling code here:
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             txtURL.setText(chooser.getSelectedFile().getAbsolutePath());
             Result ret = barcodereader.readBarcode(txtURL.getText());
