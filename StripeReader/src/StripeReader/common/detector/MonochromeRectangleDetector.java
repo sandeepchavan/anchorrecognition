@@ -70,8 +70,8 @@ public final class MonochromeRectangleDetector {
      * @param bottom maximum value of y
      * @param maxWhiteRun maximum run of white pixels that can still be considered to be within
      *  the barcode
-     * @return a {@link com.google.zxing.ResultPoint} encapsulating the corner that was found
-     * @throws com.google.zxing.ReaderException if such a point cannot be found
+     * @return a {@link StripeReader.core.ResultPoint} encapsulating the corner that was found
+     * @throws StripeReader.core.ReaderException if such a point cannot be found
      */
     private ResultPoint findCornerFromCenter(int centerX, int deltaX, int left, int right,
             int centerY, int deltaY, int top, int bottom, int maxWhiteRun) throws ReaderException {
