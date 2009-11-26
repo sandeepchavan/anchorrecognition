@@ -117,6 +117,7 @@ public final class QRCode {
     }
 
     // Return debug String.
+    @Override
     public String toString() {
         StringBuffer result = new StringBuffer(200);
         result.append("<<\n");
@@ -193,23 +194,4 @@ public final class QRCode {
     public static boolean isValidMaskPattern(int maskPattern) {
         return maskPattern >= 0 && maskPattern < NUM_MASK_PATTERNS;
     }
-    // Return true if the all values in the matrix are binary numbers.
-    //
-    // JAVAPORT: This is going to be super expensive and unnecessary, we should not call this in
-    // production. I'm leaving it because it may be useful for testing. It should be removed entirely
-    // if ByteMatrix is changed never to contain a -1.
-  /*
-    private static boolean EverythingIsBinary(final ByteMatrix matrix) {
-    for (int y = 0; y < matrix.height(); ++y) {
-    for (int x = 0; x < matrix.width(); ++x) {
-    int value = matrix.get(y, x);
-    if (!(value == 0 || value == 1)) {
-    // Found non zero/one value.
-    return false;
-    }
-    }
-    }
-    return true;
-    }
-     */
 }
