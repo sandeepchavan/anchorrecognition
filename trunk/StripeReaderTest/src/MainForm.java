@@ -2,6 +2,13 @@
 import StripeReader.BarcodeReader;
 import StripeReader.core.Result;
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
 import javax.swing.JFileChooser;
 
 /*
@@ -43,6 +50,8 @@ public class MainForm extends javax.swing.JFrame {
         txtURL = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtResult = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        picturebox1 = new Picturebox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Barcode Reader");
@@ -59,18 +68,34 @@ public class MainForm extends javax.swing.JFrame {
         txtResult.setRows(5);
         jScrollPane1.setViewportView(txtResult);
 
+        picturebox1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        javax.swing.GroupLayout picturebox1Layout = new javax.swing.GroupLayout(picturebox1);
+        picturebox1.setLayout(picturebox1Layout);
+        picturebox1Layout.setHorizontalGroup(
+            picturebox1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 421, Short.MAX_VALUE)
+        );
+        picturebox1Layout.setVerticalGroup(
+            picturebox1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 297, Short.MAX_VALUE)
+        );
+
+        jScrollPane2.setViewportView(picturebox1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtURL, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(txtURL, javax.swing.GroupLayout.DEFAULT_SIZE, 284, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdRead, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE))
+                        .addComponent(cmdRead, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -82,7 +107,9 @@ public class MainForm extends javax.swing.JFrame {
                     .addComponent(cmdRead))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 320, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -91,6 +118,14 @@ public class MainForm extends javax.swing.JFrame {
     private void cmdReadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdReadActionPerformed
         if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             txtURL.setText(chooser.getSelectedFile().getAbsolutePath());
+
+            PlanarImage p = null;
+            try {
+                p = JAI.create("URL", new File(txtURL.getText()).toURI().toURL());
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            picturebox1.set(p);
             Result ret = barcodereader.readBarcode(txtURL.getText());
             StringBuilder sb = new StringBuilder("");
             sb.append("Type: ");
@@ -116,6 +151,8 @@ public class MainForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cmdRead;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private Picturebox picturebox1;
     private javax.swing.JTextArea txtResult;
     private javax.swing.JTextField txtURL;
     // End of variables declaration//GEN-END:variables
