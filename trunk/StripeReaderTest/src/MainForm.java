@@ -1,21 +1,7 @@
 
 import StripeReader.BarcodeReader;
-import StripeReader.BarcodeWriter;
-import StripeReader.barcodetypes.EAN8Writer;
-import StripeReader.barcodetypes.qrcode.QRCodeWriter;
-import StripeReader.common.ByteMatrix;
-import StripeReader.core.BarcodeFormat;
-import StripeReader.core.DecodeHintType;
-import StripeReader.core.EncodeHintType;
 import StripeReader.core.Result;
-import StripeReader.core.WriterException;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.util.Hashtable;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 
 /*
