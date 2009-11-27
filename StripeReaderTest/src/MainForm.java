@@ -3,8 +3,6 @@ import StripeReader.BarcodeReader;
 import StripeReader.core.Result;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.jai.JAI;
