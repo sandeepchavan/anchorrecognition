@@ -124,7 +124,7 @@ public class MainForm extends javax.swing.JFrame {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             }
             picturebox1.set(p);
-            Result ret = barcodereader.readBarcode(txtURL.getText());
+            Result ret = barcodereader.readBarcode(p);
             StringBuilder sb = new StringBuilder("");
             sb.append("Type: ");
             sb.append(ret.getBarcodeFormat().getName());
