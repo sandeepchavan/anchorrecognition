@@ -63,6 +63,17 @@ public class BarcodeReader {
         return result;
     }
 
+    public Result readBarcode(PlanarImage args) {
+        Result result = null;
+        Hashtable<DecodeHintType, Object> hints = buildHints();
+        try {
+            result = decode(args, hints);
+        } catch (IOException ex) {
+            Logger.getLogger(BarcodeReader.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return result;
+    }
+
     private Result decodeOneArgument(String argument, Hashtable<DecodeHintType, Object> hints) throws IOException, URISyntaxException {
 
         File inputFile = new File(argument);
@@ -94,11 +105,33 @@ public class BarcodeReader {
             Result result = new MultiFormatReader().decode(bitmap, hints);
             ParsedResult parsedResult = ResultParser.parseResult(result);
             /*System.out.println(uri.toString() + " (format: " + result.getBarcodeFormat() +
-                    ", type: " + parsedResult.getType() + "):\nRaw result:\n" + result.getText() +
-                    "\nParsed result:\n" + parsedResult.getDisplayResult());*/
+            ", type: " + parsedResult.getType() + "):\nRaw result:\n" + result.getText() +
+            "\nParsed result:\n" + parsedResult.getDisplayResult());*/
             return result;
         } catch (ReaderException e) {
             System.out.println(uri.toString() + ": No barcode found");
+            return null;
+        }
+    }
+
+    private Result decode(PlanarImage pi, Hashtable<DecodeHintType, Object> hints) throws IOException {
+        BufferedImage image = null;
+        if (pi == null) {
+            System.err.println("Planar image is null! Could not load image");
+            return null;
+        }
+        image = pi.getAsBufferedImage();
+        try {
+            LuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap bitmap = new BinaryBitmap(new GlobalHistogramBinarizer(source));
+            Result result = new MultiFormatReader().decode(bitmap, hints);
+            ParsedResult parsedResult = ResultParser.parseResult(result);
+            /*System.out.println(uri.toString() + " (format: " + result.getBarcodeFormat() +
+            ", type: " + parsedResult.getType() + "):\nRaw result:\n" + result.getText() +
+            "\nParsed result:\n" + parsedResult.getDisplayResult());*/
+            return result;
+        } catch (ReaderException e) {
+            System.out.println("No barcode found");
             return null;
         }
     }
